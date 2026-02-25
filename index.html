@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sangeetha Vasthralayam</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Sangeetha Vasthralayam | Premium Ethnic Wear</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
     <style>
         :root {
             --orange-gold: #FF8C00;
@@ -12,224 +14,281 @@
             --black: #0F0F0F;
             --ivory: #FDFBF7;
             --text: #1A1A1A;
+            --success: #2ecc71;
+            --danger: #e74c3c;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Montserrat', sans-serif; background: var(--ivory); color: var(--text); }
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        body { font-family: 'Montserrat', sans-serif; background: var(--ivory); color: var(--text); overflow-x: hidden; }
 
-        header { background: var(--black); padding: 30px; text-align: center; border-bottom: 4px solid var(--orange-gold); }
-        header h1 { font-family: 'Cinzel'; color: var(--orange-gold); font-size: 1.8rem; letter-spacing: 2px; text-transform: uppercase; }
+        header { 
+            background: var(--black); 
+            padding: 20px; 
+            text-align: center; 
+            border-bottom: 4px solid var(--orange-gold);
+            position: sticky; top: 0; z-index: 100;
+        }
+        header h1 { font-family: 'Cinzel'; color: var(--orange-gold); font-size: 1.5rem; letter-spacing: 2px; }
 
-        .section { padding: 30px 0 30px 20px; }
-        .section-header { display: flex; justify-content: space-between; align-items: center; padding-right: 20px; margin-bottom: 15px; }
-        .section-header h2 { font-family: 'Cinzel'; font-size: 1.1rem; color: var(--orange-gold); border-bottom: 2px solid var(--orange-light); }
-        .view-all { color: var(--orange-gold); font-weight: 700; font-size: .8rem; cursor: pointer; }
+        .status-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; margin-top: 5px;}
+        .status-open { background: var(--success); color: white; }
+        .status-closed { background: var(--danger); color: white; }
+
+        /* Sort Bar */
+        .filter-bar { background: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; position: sticky; top: 85px; z-index: 90; }
+        .filter-bar select { padding: 8px; border-radius: 5px; border: 1px solid var(--orange-gold); font-family: 'Montserrat'; outline: none; }
+        .back-btn { background: var(--black); color: white; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 0.8rem; }
+
+        .section { padding: 25px 0 25px 15px; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; padding-right: 15px; margin-bottom: 15px; }
+        .section-header h2 { font-family: 'Cinzel'; font-size: 1.1rem; color: var(--orange-gold); }
+        .view-all { color: var(--orange-gold); font-weight: 700; font-size: .75rem; cursor: pointer; border: 1px solid var(--orange-gold); padding: 4px 8px; border-radius: 4px; }
 
         .scroller { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 15px; }
         .scroller::-webkit-scrollbar { display: none; }
+        
+        /* Grid Layout for View All */
+        .grid-view { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px; }
+        @media (min-width: 768px) { .grid-view { grid-template-columns: repeat(5, 1fr); } }
 
-        .card { min-width: 160px; background: white; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,140,0,.1); transition: .3s; cursor: pointer; }
-        .pc-only { display: none; }
-        @media (min-width: 769px) { .pc-only { display: block; } .card { min-width: 180px; } }
-
-        .img-placeholder { height: 180px; display: flex; align-items: center; justify-content: center; font-size: 3rem; background: #fff; }
-        .meta { padding: 12px; }
-        .meta h3 { font-size: .8rem; color: #444; }
+        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; }
+        .img-box { height: 200px; width: 100%; overflow: hidden; background: #f0f0f0; display: flex; align-items: center; justify-content: center; }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; }
+        .meta { padding: 10px; }
+        .meta h3 { font-size: .75rem; height: 30px; overflow: hidden; color: #444; }
         .meta p { color: var(--orange-gold); font-weight: 800; margin-top: 5px; }
 
-        /* PREMIUM CONTACT SECTION (Matches Header Style) */
-        .contact-premium { 
-            background: var(--black); 
-            padding: 40px 20px; 
-            text-align: center; 
-            border-top: 4px solid var(--orange-gold);
-            margin-top: 40px;
-        }
-        .contact-premium h3 { 
-            font-family: 'Cinzel'; 
-            color: var(--orange-gold); 
-            margin-bottom: 25px; 
-            font-size: 1.4rem;
-            letter-spacing: 2px;
-        }
-        .contact-links { display: flex; flex-direction: column; gap: 15px; max-width: 400px; margin: 0 auto; }
-        .contact-item { 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 12px; 
-            text-decoration: none; 
-            color: var(--orange-gold); 
-            font-weight: 600; 
-            padding: 15px; 
-            border-radius: 8px; 
-            border: 1px solid var(--orange-gold);
-            background: rgba(255, 140, 0, 0.05);
-            transition: 0.3s;
-            font-family: 'Montserrat';
-            font-size: 0.9rem;
-        }
-        .contact-item:hover { background: var(--orange-gold); color: var(--black); }
+        /* Modals */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; overflow-y: auto; }
+        .modal-body { background: white; margin: 15px auto; max-width: 500px; border-radius: 20px; padding: 20px; position: relative; }
+        
+        /* Form Styling */
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 5px; color: #666; }
+        .input-group input, .input-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; }
+        .input-group input:invalid { border-color: var(--danger); }
 
-        /* MODALS & BUTTONS */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; overflow-y: auto; }
-        .modal-body { padding: 20px; padding-bottom: 120px; }
-        .buy-bar { position: fixed; bottom: 0; width: 100%; background: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; }
-
-        .btn-gold { background: linear-gradient(45deg, var(--orange-gold), var(--orange-light)); color: white; border: none; padding: 12px 20px; font-weight: 800; border-radius: 8px; cursor: pointer; }
-        .btn-black { background: var(--black); color: white; border: none; padding: 12px 20px; font-weight: 700; border-radius: 8px; cursor: pointer; margin-right: 5px; }
-
-        #cart-floater { position: fixed; bottom: 100px; right: 20px; background: var(--orange-gold); color: white; padding: 15px 20px; border-radius: 50px; font-weight: 800; box-shadow: 0 5px 15px rgba(0,0,0,0.2); cursor: pointer; display: none; z-index: 999; }
-
-        .input-group { margin-bottom: 15px; text-align: left; }
-        .input-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 5px; color: #666; }
-        .input-group input, .input-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: Montserrat; outline: none; }
-
-        .size-btn { padding: 10px 15px; border: 2px solid #eee; border-radius: 8px; cursor: pointer; font-weight: 700; }
+        .size-btn { padding: 10px; border: 2px solid #eee; border-radius: 8px; cursor: pointer; font-weight: 700; flex: 1; text-align: center; }
         .size-btn.active { border-color: var(--orange-gold); color: var(--orange-gold); background: #fff8f0; }
 
-        footer { background: #000; color: #555; text-align: center; padding: 20px; font-size: 0.7rem; }
+        .thumb-row { display: flex; gap: 8px; margin: 15px 0; overflow-x: auto; padding-bottom: 5px; }
+        .thumb-box { width: 50px; height: 65px; border: 2px solid #eee; border-radius: 5px; overflow: hidden; flex-shrink: 0; }
+        .thumb-box.active { border-color: var(--orange-gold); }
+        .thumb-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        #cart-floater { position: fixed; bottom: 20px; right: 20px; background: var(--orange-gold); color: white; padding: 15px 20px; border-radius: 50px; font-weight: 800; z-index: 999; }
+        
+        .cart-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #eee; }
+        .cart-img { width: 50px; height: 50px; border-radius: 5px; overflow: hidden; }
+        .cart-img img { width: 100%; height: 100%; object-fit: cover; }
+
+        footer { background: #000; color: #666; text-align: center; padding: 30px; font-size: 0.7rem; }
     </style>
 </head>
 <body>
 
-<header><h1>Sangeetha Vasthralayam</h1></header>
+<header>
+    <h1 onclick="location.reload()" style="cursor:pointer">Sangeetha Vasthralayam</h1>
+    <div id="store-status"></div>
+</header>
 
-<div id="home-view">
+<div id="home-container">
     <div id="sections"></div>
-    
-    <div class="contact-premium">
-        <h3>Contact Us</h3>
-        <div class="contact-links">
-            <a href="tel:9618476045" class="contact-item">📞 +91 96184 76045</a>
-            <a href="https://wa.me/919618476045" class="contact-item">💬 WhatsApp Support</a>
-            <a href="https://www.instagram.com/sangeetha_vasthralayam" class="contact-item">📸 Instagram</a>
-            <p style="font-size: 0.75rem; color: #777; margin-top: 15px; letter-spacing: 1px;">📍 VENKATAGIRI NEW BUS STOP</p>
-        </div>
-    </div>
 </div>
 
-<footer>© 2026 SANGEETHA VASTHRALAYAM</footer>
+<div id="category-container" style="display:none">
+    <div class="filter-bar">
+        <div class="back-btn" onclick="closeCategoryView()">← BACK</div>
+        <select id="sort-logic" onchange="sortCurrentCategory()">
+            <option value="recent">Sort: Recent</option>
+            <option value="low">Price: Low to High</option>
+            <option value="high">Price: High to Low</option>
+        </select>
+    </div>
+    <div id="category-grid" class="grid-view"></div>
+</div>
 
-<div id="cart-floater" onclick="openCart()">🛒 CART (<span id="cart-count">0</span>)</div>
+<div id="cart-floater" onclick="openCart()" style="display:none;">🛒 CART (<span id="cart-count">0</span>)</div>
 
 <div id="product-modal" class="modal">
     <div class="modal-body">
-        <button type="button" onclick="closeModal()" style="border:none; background:none; color:var(--orange-gold); font-weight:800; cursor:pointer;">✕ CLOSE</button>
-        <div id="m-img" style="height:300px; font-size:5rem; display:flex; align-items:center; justify-content:center; background:#fff; margin-top:15px; border-radius:15px; border:1px solid #eee;"></div>
-        <h1 id="m-title" style="font-family:Cinzel; margin-top:20px;"></h1>
+        <button onclick="closeModal()" style="float:right; border:none; background:none; font-size:1.5rem;">✕</button>
+        <div id="main-img-cont" style="height:350px; width:100%; background:#f9f9f9; border-radius:15px; overflow:hidden;">
+            <img id="m-main-pic" src="" style="width:100%; height:100%; object-fit:contain;">
+        </div>
+        <div class="thumb-row" id="m-thumbs"></div>
+        <h2 id="m-title" style="font-family:Cinzel; margin-top:10px;"></h2>
         <p id="m-price" style="font-size:1.8rem; font-weight:800; color:var(--orange-gold);"></p>
-        <div id="m-size-area" style="margin-top:20px">
-            <p style="font-size:0.7rem; font-weight:700; color:#aaa;">SELECT SIZE</p>
-            <div id="m-sizes" style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;"></div>
+        
+        <div id="size-section">
+            <p style="font-size:0.7rem; font-weight:700; color:#888;">SELECT SIZE *</p>
+            <div id="m-sizes" style="display:flex; gap:8px; margin-top:10px;"></div>
         </div>
-    </div>
-    <div class="buy-bar">
-        <p id="f-price" style="font-size:1.4rem; font-weight:800; color:var(--orange-gold)"></p>
-        <div>
-            <button type="button" class="btn-black" onclick="addToCart(event)">+ CART</button>
-            <button type="button" class="btn-gold" onclick="openCheckoutModal('direct')">BUY NOW</button>
+
+        <div style="margin-top:20px; display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <button onclick="addToCart()" style="background:#222; color:white; border:none; padding:15px; border-radius:10px; font-weight:700;">+ CART</button>
+            <button onclick="openCheckout('direct')" style="background:var(--orange-gold); color:white; border:none; padding:15px; border-radius:10px; font-weight:700;">BUY NOW</button>
         </div>
     </div>
 </div>
 
-<div id="checkout-modal" class="modal" style="z-index: 1200;">
-    <div class="modal-body" style="text-align: center;">
-        <h2 style="font-family:Cinzel; color:var(--orange-gold); margin-bottom:20px;">Delivery Details</h2>
-        <div class="input-group"><label>FULL NAME</label><input type="text" id="cust-name"></div>
-        <div class="input-group"><label>MOBILE NUMBER</label><input type="tel" id="cust-phone"></div>
-        <div class="input-group"><label>FULL ADDRESS</label><textarea id="cust-address" rows="4"></textarea></div>
-        <button type="button" class="btn-gold" style="width:100%; padding:18px;" onclick="finalizeOrder()">PROCEED TO WHATSAPP</button>
-        <button type="button" onclick="closeCheckout()" style="width:100%; margin-top:15px; border:none; background:none; font-weight:700; cursor:pointer;">Cancel</button>
-    </div>
-</div>
-
-<div id="cart-modal" class="modal" style="z-index: 1100;">
+<div id="checkout-modal" class="modal">
     <div class="modal-body">
-        <h2 style="font-family:Cinzel; color:var(--orange-gold); margin-bottom:20px;">Shopping Cart</h2>
-        <div id="cart-items-list"></div>
-        <div style="margin-top:20px; border-top:2px solid #eee; padding-top:20px;">
-            <h3>Total: ₹<span id="cart-total">0</span></h3>
-            <button type="button" class="btn-gold" style="width:100%; margin-top:20px; padding:18px;" onclick="openCheckoutModal('cart')">CHECKOUT CART</button>
-            <button type="button" onclick="closeCart()" style="width:100%; margin-top:15px; border:none; background:none; font-weight:700; cursor:pointer;">Continue Shopping</button>
-        </div>
+        <h2 style="font-family:Cinzel; margin-bottom:20px;">Shipping Details</h2>
+        <form id="shipping-form">
+            <div class="input-group">
+                <label>FULL NAME *</label>
+                <input type="text" id="cust-name" required placeholder="e.g. Rahul Sharma">
+            </div>
+            <div class="input-group">
+                <label>PHONE NUMBER *</label>
+                <input type="tel" id="cust-phone" required pattern="[0-9]{10}" placeholder="10 Digit Mobile Number">
+            </div>
+            <div class="input-group">
+                <label>COMPLETE ADDRESS *</label>
+                <textarea id="cust-address" required rows="4" placeholder="House No, Street, Landmark, City, Pincode"></textarea>
+            </div>
+            <button type="submit" style="width:100%; background:var(--orange-gold); color:white; padding:18px; border:none; border-radius:12px; font-weight:800;">FINALIZE ORDER (WHATSAPP)</button>
+            <button type="button" onclick="closeCheckout()" style="width:100%; margin-top:10px; background:none; border:none; color:#888;">Cancel</button>
+        </form>
     </div>
 </div>
+
+<div id="cart-modal" class="modal"><div class="modal-body"><h2>Your Cart</h2><div id="cart-items-list"></div><button onclick="openCheckout('cart')" style="width:100%; background:var(--orange-gold); color:white; padding:15px; margin-top:20px; border:none; border-radius:10px;">PROCEED TO CHECKOUT</button><button onclick="closeCart()" style="width:100%; border:none; background:none; margin-top:10px;">Back</button></div></div>
+
+<footer>© 2026 SANGEETHA VASTHRALAYAM</footer>
 
 <script>
-const data = [
-    {name:"Kurtas", icon:"👘", basePrice:1299, hasSize:true},
-    {name:"Tops", icon:"👚", basePrice:899, hasSize:true},
-    {name:"Leggings", icon:"👖", basePrice:499, hasSize:true},
-    {name:"Sarees", icon:"🥻", basePrice:3500, hasSize:false}
+// Specific Data for Kurtha 1 and Kurtha 2
+const specificItems = {
+    "Kurtas Premium #1": ["https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/e/i/k/l-pwk694-purshottam-wala-original-imahjx486gkhgujr.jpeg?q=90","https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/h/k/w/xl-hek694-dressar-original-imahjfcqrbggyznb.jpeg?q=90","https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/c/x/p/xl-hek694-dressar-original-imahjfcnxjg5fqq.jpeg?q=90","https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/e/i/k/l-pwk694-purshottam-wala-original-imahjx486gkhgujr.jpeg?q=90"],
+    "Kurtas Premium #2": ["https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/g/p/n/xxl-pwk113-purshottam-wala-original-imahktdan8achghk.jpeg?q=90","https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/l/p/u/s-hek113-dressar-original-imahkffrrhchyzku.jpeg?q=90","https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/l/b/z/xxl-hek113-dressar-original-imahkffrubwnz9n8.jpeg?q=90","https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/c/q/h/l-hek113-dressar-original-imahkffrgkqn9gfm.jpeg?q=90"]
+};
+
+const categories = [
+    {name:"Kurtas", icon:"👘", price:1299, hasSize:true},
+    {name:"Tops", icon:"👚", price:899, hasSize:true},
+    {name:"Leggings", icon:"👖", price:499, hasSize:true},
+    {name:"Sarees", icon:"🥻", price:3500, hasSize:false}
 ];
 
 let cart = [];
-let currentProduct = {};
-let selectedSize = "N/A";
-let checkoutSource = "direct";
+let currentItem = {};
+let selectedSize = "";
+let currentViewedCategoryItems = [];
+let checkoutMode = "direct";
 
 window.onload = () => {
-    document.getElementById("cust-name").value = localStorage.getItem("sv_name") || "";
-    document.getElementById("cust-phone").value = localStorage.getItem("sv_phone") || "";
-    document.getElementById("cust-address").value = localStorage.getItem("sv_address") || "";
-    init();
+    updateStatus();
+    renderHome();
+    loadSavedDetails();
 };
 
-function init() {
-    const root = document.getElementById("sections");
-    root.innerHTML = data.map(cat => {
-        const items = Array.from({length: 10}, (_, i) => ({
-            name: `${cat.name} Premium ${i + 1}`,
-            price: cat.basePrice + (i * 20),
-            icon: cat.icon,
-            hasSize: cat.hasSize
-        }));
-        return `
-            <div class="section">
-                <div class="section-header"><h2>${cat.name}</h2><span class="view-all">View All →</span></div>
-                <div class="scroller">${items.map((item, idx) => `
-                    <div class="card ${idx >= 4 ? 'pc-only' : ''}" onclick='showDetail(${JSON.stringify(item)})'>
-                        <div class="img-placeholder">${item.icon}</div>
-                        <div class="meta"><h3>${item.name}</h3><p>₹${item.price}</p></div>
-                    </div>`).join("")}</div>
-            </div>`;
-    }).join("");
+function updateStatus() {
+    const hr = new Date().getHours() + new Date().getMinutes()/60;
+    const badge = document.getElementById("store-status");
+    badge.innerHTML = (hr >= 9 && hr <= 22.5) ? `<span class="status-badge status-open">● Shop Open</span>` : `<span class="status-badge status-closed">● Shop Closed</span>`;
 }
 
-function showDetail(item) {
-    currentProduct = {...item, finalPrice: item.price};
-    selectedSize = item.hasSize ? "S" : "N/A";
-    document.getElementById("m-title").innerText = item.name;
-    document.getElementById("m-price").innerText = "₹" + item.price;
-    document.getElementById("f-price").innerText = "₹" + item.price;
-    document.getElementById("m-img").innerText = item.icon;
+function renderHome() {
+    const limit = window.innerWidth <= 768 ? 4 : 10;
+    const root = document.getElementById("sections");
+    root.innerHTML = categories.map(cat => `
+        <div class="section">
+            <div class="section-header"><h2>${cat.name}</h2><span class="view-all" onclick="openCategoryView('${cat.name}')">View All 50+</span></div>
+            <div class="scroller">${generateSet(cat, limit).map(i => renderCard(i)).join("")}</div>
+        </div>`).join("");
+}
 
-    const sizeWrap = document.getElementById("m-sizes");
-    if(item.hasSize) {
-        document.getElementById("m-size-area").style.display = "block";
-        sizeWrap.innerHTML = ["S","M","L","XL","XXL"].map((s, idx) => 
-            `<div class="size-btn ${s==='S'?'active':''}" onclick="changeSize(this, '${s}', ${idx*100})">${s}</div>`
-        ).join("");
+function generateSet(cat, num) {
+    return Array.from({length: num}, (_, i) => {
+        const name = `${cat.name} Premium #${i+1}`;
+        const imgs = specificItems[name] || [cat.icon, cat.icon, cat.icon, cat.icon];
+        return { name, basePrice: cat.price + (i * 20), images: imgs, hasSize: cat.hasSize, isIcon: !specificItems[name], id: name + Date.now() };
+    });
+}
+
+function renderCard(item) {
+    const img = item.isIcon ? `<div style="font-size:3.5rem">${item.images[0]}</div>` : `<img src="${item.images[0]}" loading="lazy">`;
+    return `<div class="card" onclick='openProduct(${JSON.stringify(item)})'><div class="img-box">${img}</div><div class="meta"><h3>${item.name}</h3><p>₹${item.basePrice}</p></div></div>`;
+}
+
+// 1. View All Logic
+function openCategoryView(catName) {
+    const cat = categories.find(c => c.name === catName);
+    currentViewedCategoryItems = generateSet(cat, 50);
+    document.getElementById("home-container").style.display = "none";
+    document.getElementById("category-container").style.display = "block";
+    renderCategoryGrid(currentViewedCategoryItems);
+    window.scrollTo(0,0);
+}
+
+function closeCategoryView() {
+    document.getElementById("home-container").style.display = "block";
+    document.getElementById("category-container").style.display = "none";
+}
+
+function renderCategoryGrid(items) {
+    document.getElementById("category-grid").innerHTML = items.map(i => renderCard(i)).join("");
+}
+
+function sortCurrentCategory() {
+    const logic = document.getElementById("sort-logic").value;
+    let sorted = [...currentViewedCategoryItems];
+    if(logic === "low") sorted.sort((a,b) => a.basePrice - b.basePrice);
+    if(logic === "high") sorted.sort((a,b) => b.basePrice - a.basePrice);
+    if(logic === "recent") sorted = sorted.sort(() => Math.random() - 0.5);
+    renderCategoryGrid(sorted);
+}
+
+// Product Details
+function openProduct(item) {
+    currentItem = item;
+    selectedSize = "";
+    document.getElementById("m-title").innerText = item.name;
+    document.getElementById("m-price").innerText = "₹" + item.basePrice;
+    
+    const pic = document.getElementById("m-main-pic");
+    const thumbBox = document.getElementById("m-thumbs");
+    
+    if(item.isIcon) {
+        document.getElementById("main-img-cont").innerHTML = `<div style="font-size:8rem; display:flex; height:100%; align-items:center; justify-content:center;">${item.images[0]}</div>`;
+        thumbBox.innerHTML = "";
     } else {
-        document.getElementById("m-size-area").style.display = "none";
+        document.getElementById("main-img-cont").innerHTML = `<img id="m-main-pic" src="${item.images[0]}" style="width:100%; height:100%; object-fit:contain;">`;
+        thumbBox.innerHTML = item.images.map((img, idx) => `<div class="thumb-box ${idx===0?'active':''}" onclick="swapImg(this, '${img}')"><img src="${img}"></div>`).join("");
+    }
+
+    const mSizes = document.getElementById("m-sizes");
+    if(item.hasSize) {
+        document.getElementById("size-section").style.display = "block";
+        mSizes.innerHTML = ["S","M","L","XL","XXL"].map((s, i) => `<div class="size-btn" onclick="pickSize(this, '${s}', ${i * 50})">${s}</div>`).join("");
+    } else {
+        document.getElementById("size-section").style.display = "none";
+        selectedSize = "N/A";
     }
     document.getElementById("product-modal").style.display = "block";
 }
 
-function changeSize(el, s, extra) {
+function swapImg(el, src) {
+    document.getElementById("m-main-pic").src = src;
+    document.querySelectorAll('.thumb-box').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+}
+
+function pickSize(el, s, extra) {
     selectedSize = s;
     document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
     el.classList.add('active');
-    currentProduct.finalPrice = currentProduct.price + extra;
-    document.getElementById("m-price").innerText = "₹" + currentProduct.finalPrice;
-    document.getElementById("f-price").innerText = "₹" + currentProduct.finalPrice;
+    currentItem.finalPrice = currentItem.basePrice + extra;
+    document.getElementById("m-price").innerText = "₹" + currentItem.finalPrice;
 }
 
-function addToCart(e) {
-    e.stopPropagation(); 
-    const price = currentProduct.finalPrice || currentProduct.price;
-    cart.push({ name: currentProduct.name, size: selectedSize, price: price, icon: currentProduct.icon });
+// Cart & Checkout Logic
+function addToCart() {
+    if(!selectedSize) { alert("Please select a size!"); return; }
+    const img = currentItem.isIcon ? currentItem.images[0] : document.getElementById("m-main-pic").src;
+    cart.push({...currentItem, size: selectedSize, cartImg: img, finalPrice: currentItem.finalPrice || currentItem.basePrice});
     updateCartUI();
     closeModal();
 }
@@ -240,44 +299,52 @@ function updateCartUI() {
 }
 
 function openCart() {
-    let total = 0;
     const list = document.getElementById("cart-items-list");
-    list.innerHTML = cart.map((item, idx) => {
-        total += item.price;
-        return `<div style="display:flex; justify-content:space-between; padding:15px 0; border-bottom:1px solid #eee;">
-            <div><b>${item.name}</b> (${item.size})</div>
-            <div>₹${item.price} <button onclick="cart.splice(${idx},1); updateCartUI(); openCart();" style="color:red; border:none; background:none; cursor:pointer; font-weight:800; margin-left:10px;">✕</button></div>
-        </div>`;
-    }).join("");
-    if(cart.length === 0) { list.innerHTML = "<p style='text-align:center; padding:20px;'>Your cart is empty</p>"; }
-    document.getElementById("cart-total").innerText = total;
+    list.innerHTML = cart.map((i, idx) => `
+        <div class="cart-item">
+            <div class="cart-img">${i.isIcon ? '<span>'+i.cartImg+'</span>' : '<img src="'+i.cartImg+'">'}</div>
+            <div style="flex:1"><b>${i.name}</b><br><small>Size: ${i.size}</small></div>
+            <div>₹${i.finalPrice} <button onclick="cart.splice(${idx},1); updateCartUI(); openCart();" style="color:red; border:none; background:none;">✕</button></div>
+        </div>`).join("");
     document.getElementById("cart-modal").style.display = "block";
 }
 
-function openCheckoutModal(source) {
-    checkoutSource = source;
+function openCheckout(mode) {
+    if(mode === 'direct' && !selectedSize) { alert("Select size first!"); return; }
+    checkoutMode = mode;
     document.getElementById("checkout-modal").style.display = "block";
 }
 
-function finalizeOrder() {
+// 2. Local Storage Logic
+function loadSavedDetails() {
+    if(localStorage.getItem("sv_name")) document.getElementById("cust-name").value = localStorage.getItem("sv_name");
+    if(localStorage.getItem("sv_phone")) document.getElementById("cust-phone").value = localStorage.getItem("sv_phone");
+    if(localStorage.getItem("sv_address")) document.getElementById("cust-address").value = localStorage.getItem("sv_address");
+}
+
+document.getElementById("shipping-form").onsubmit = (e) => {
+    e.preventDefault();
     const name = document.getElementById("cust-name").value;
     const phone = document.getElementById("cust-phone").value;
     const addr = document.getElementById("cust-address").value;
-    if(!name || !phone || !addr) { alert("Please fill all details"); return; }
+    
+    // Save to LocalStorage
     localStorage.setItem("sv_name", name);
     localStorage.setItem("sv_phone", phone);
     localStorage.setItem("sv_address", addr);
-    let msg = `*NEW ORDER - Sangeetha Vasthralayam* 👋\n\n*Customer:* ${name}\n*Phone:* ${phone}\n*Address:* ${addr}\n\n*Items:*\n`;
+    
+    let orderItems = checkoutMode === 'direct' ? [{...currentItem, size: selectedSize, cartImg: currentItem.isIcon ? currentItem.images[0] : document.getElementById("m-main-pic").src, finalPrice: currentItem.finalPrice || currentItem.basePrice}] : cart;
+    
+    let text = `*NEW ORDER: SANGEETHA VASTHRALAYAM*\n\n*Customer:* ${name}\n*Phone:* ${phone}\n*Address:* ${addr}\n\n*Items:*\n`;
     let total = 0;
-    if(checkoutSource === 'direct') {
-        msg += `- ${currentProduct.name} (${selectedSize}) [${currentProduct.icon}] - ₹${currentProduct.finalPrice}\n`;
-        total = currentProduct.finalPrice;
-    } else {
-        cart.forEach((item, i) => { msg += `${i+1}. ${item.name} (${item.size}) [${item.icon}] - ₹${item.price}\n`; total += item.price; });
-    }
-    msg += `\n*Total Amount: ₹${total}*`;
-    window.open(`https://wa.me/919618476045?text=${encodeURIComponent(msg)}`);
-}
+    orderItems.forEach((i, idx) => {
+        text += `${idx+1}. ${i.name} (${i.size}) - ₹${i.finalPrice}\nLink: ${i.cartImg}\n\n`;
+        total += i.finalPrice;
+    });
+    text += `*GRAND TOTAL: ₹${total}*`;
+    
+    window.open(`https://wa.me/919618476045?text=${encodeURIComponent(text)}`);
+};
 
 function closeModal() { document.getElementById("product-modal").style.display = "none"; }
 function closeCart() { document.getElementById("cart-modal").style.display = "none"; }
