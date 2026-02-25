@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sangeetha Vasthralayam</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --orange-gold: #FF8C00;
+            --orange-light: #FFB347;
+            --black: #0F0F0F;
+            --ivory: #FDFBF7;
+            --text: #1A1A1A;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Montserrat', sans-serif; background: var(--ivory); color: var(--text); }
+
+        header { background: var(--black); padding: 30px; text-align: center; border-bottom: 4px solid var(--orange-gold); }
+        header h1 { font-family: 'Cinzel'; color: var(--orange-gold); font-size: 1.8rem; letter-spacing: 2px; text-transform: uppercase; }
+
+        .section { padding: 30px 0 30px 20px; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; padding-right: 20px; margin-bottom: 15px; }
+        .section-header h2 { font-family: 'Cinzel'; font-size: 1.1rem; color: var(--orange-gold); border-bottom: 2px solid var(--orange-light); }
+        .view-all { color: var(--orange-gold); font-weight: 700; font-size: .8rem; cursor: pointer; }
+
+        .scroller { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 15px; }
+        .scroller::-webkit-scrollbar { display: none; }
+
+        .card { min-width: 160px; background: white; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,140,0,.1); transition: .3s; cursor: pointer; }
+        .pc-only { display: none; }
+        @media (min-width: 769px) { .pc-only { display: block; } .card { min-width: 180px; } }
+
+        .img-placeholder { height: 180px; display: flex; align-items: center; justify-content: center; font-size: 3rem; background: #fff; }
+        .meta { padding: 12px; }
+        .meta h3 { font-size: .8rem; color: #444; }
+        .meta p { color: var(--orange-gold); font-weight: 800; margin-top: 5px; }
+
+        /* PREMIUM CONTACT SECTION (Matches Header Style) */
+        .contact-premium { 
+            background: var(--black); 
+            padding: 40px 20px; 
+            text-align: center; 
+            border-top: 4px solid var(--orange-gold);
+            margin-top: 40px;
+        }
+        .contact-premium h3 { 
+            font-family: 'Cinzel'; 
+            color: var(--orange-gold); 
+            margin-bottom: 25px; 
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+        }
+        .contact-links { display: flex; flex-direction: column; gap: 15px; max-width: 400px; margin: 0 auto; }
+        .contact-item { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 12px; 
+            text-decoration: none; 
+            color: var(--orange-gold); 
+            font-weight: 600; 
+            padding: 15px; 
+            border-radius: 8px; 
+            border: 1px solid var(--orange-gold);
+            background: rgba(255, 140, 0, 0.05);
+            transition: 0.3s;
+            font-family: 'Montserrat';
+            font-size: 0.9rem;
+        }
+        .contact-item:hover { background: var(--orange-gold); color: var(--black); }
+
+        /* MODALS & BUTTONS */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; overflow-y: auto; }
+        .modal-body { padding: 20px; padding-bottom: 120px; }
+        .buy-bar { position: fixed; bottom: 0; width: 100%; background: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; }
+
+        .btn-gold { background: linear-gradient(45deg, var(--orange-gold), var(--orange-light)); color: white; border: none; padding: 12px 20px; font-weight: 800; border-radius: 8px; cursor: pointer; }
+        .btn-black { background: var(--black); color: white; border: none; padding: 12px 20px; font-weight: 700; border-radius: 8px; cursor: pointer; margin-right: 5px; }
+
+        #cart-floater { position: fixed; bottom: 100px; right: 20px; background: var(--orange-gold); color: white; padding: 15px 20px; border-radius: 50px; font-weight: 800; box-shadow: 0 5px 15px rgba(0,0,0,0.2); cursor: pointer; display: none; z-index: 999; }
+
+        .input-group { margin-bottom: 15px; text-align: left; }
+        .input-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 5px; color: #666; }
+        .input-group input, .input-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: Montserrat; outline: none; }
+
+        .size-btn { padding: 10px 15px; border: 2px solid #eee; border-radius: 8px; cursor: pointer; font-weight: 700; }
+        .size-btn.active { border-color: var(--orange-gold); color: var(--orange-gold); background: #fff8f0; }
+
+        footer { background: #000; color: #555; text-align: center; padding: 20px; font-size: 0.7rem; }
+    </style>
+</head>
+<body>
+
+<header><h1>Sangeetha Vasthralayam</h1></header>
+
+<div id="home-view">
+    <div id="sections"></div>
+    
+    <div class="contact-premium">
+        <h3>Contact Us</h3>
+        <div class="contact-links">
+            <a href="tel:9618476045" class="contact-item">📞 +91 96184 76045</a>
+            <a href="https://wa.me/919618476045" class="contact-item">💬 WhatsApp Support</a>
+            <a href="https://www.instagram.com/sangeetha_vasthralayam" class="contact-item">📸 Instagram</a>
+            <p style="font-size: 0.75rem; color: #777; margin-top: 15px; letter-spacing: 1px;">📍 VENKATAGIRI NEW BUS STOP</p>
+        </div>
+    </div>
+</div>
+
+<footer>© 2026 SANGEETHA VASTHRALAYAM</footer>
+
+<div id="cart-floater" onclick="openCart()">🛒 CART (<span id="cart-count">0</span>)</div>
+
+<div id="product-modal" class="modal">
+    <div class="modal-body">
+        <button type="button" onclick="closeModal()" style="border:none; background:none; color:var(--orange-gold); font-weight:800; cursor:pointer;">✕ CLOSE</button>
+        <div id="m-img" style="height:300px; font-size:5rem; display:flex; align-items:center; justify-content:center; background:#fff; margin-top:15px; border-radius:15px; border:1px solid #eee;"></div>
+        <h1 id="m-title" style="font-family:Cinzel; margin-top:20px;"></h1>
+        <p id="m-price" style="font-size:1.8rem; font-weight:800; color:var(--orange-gold);"></p>
+        <div id="m-size-area" style="margin-top:20px">
+            <p style="font-size:0.7rem; font-weight:700; color:#aaa;">SELECT SIZE</p>
+            <div id="m-sizes" style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;"></div>
+        </div>
+    </div>
+    <div class="buy-bar">
+        <p id="f-price" style="font-size:1.4rem; font-weight:800; color:var(--orange-gold)"></p>
+        <div>
+            <button type="button" class="btn-black" onclick="addToCart(event)">+ CART</button>
+            <button type="button" class="btn-gold" onclick="openCheckoutModal('direct')">BUY NOW</button>
+        </div>
+    </div>
+</div>
+
+<div id="checkout-modal" class="modal" style="z-index: 1200;">
+    <div class="modal-body" style="text-align: center;">
+        <h2 style="font-family:Cinzel; color:var(--orange-gold); margin-bottom:20px;">Delivery Details</h2>
+        <div class="input-group"><label>FULL NAME</label><input type="text" id="cust-name"></div>
+        <div class="input-group"><label>MOBILE NUMBER</label><input type="tel" id="cust-phone"></div>
+        <div class="input-group"><label>FULL ADDRESS</label><textarea id="cust-address" rows="4"></textarea></div>
+        <button type="button" class="btn-gold" style="width:100%; padding:18px;" onclick="finalizeOrder()">PROCEED TO WHATSAPP</button>
+        <button type="button" onclick="closeCheckout()" style="width:100%; margin-top:15px; border:none; background:none; font-weight:700; cursor:pointer;">Cancel</button>
+    </div>
+</div>
+
+<div id="cart-modal" class="modal" style="z-index: 1100;">
+    <div class="modal-body">
+        <h2 style="font-family:Cinzel; color:var(--orange-gold); margin-bottom:20px;">Shopping Cart</h2>
+        <div id="cart-items-list"></div>
+        <div style="margin-top:20px; border-top:2px solid #eee; padding-top:20px;">
+            <h3>Total: ₹<span id="cart-total">0</span></h3>
+            <button type="button" class="btn-gold" style="width:100%; margin-top:20px; padding:18px;" onclick="openCheckoutModal('cart')">CHECKOUT CART</button>
+            <button type="button" onclick="closeCart()" style="width:100%; margin-top:15px; border:none; background:none; font-weight:700; cursor:pointer;">Continue Shopping</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const data = [
+    {name:"Kurtas", icon:"👘", basePrice:1299, hasSize:true},
+    {name:"Tops", icon:"👚", basePrice:899, hasSize:true},
+    {name:"Leggings", icon:"👖", basePrice:499, hasSize:true},
+    {name:"Sarees", icon:"🥻", basePrice:3500, hasSize:false}
+];
+
+let cart = [];
+let currentProduct = {};
+let selectedSize = "N/A";
+let checkoutSource = "direct";
+
+window.onload = () => {
+    document.getElementById("cust-name").value = localStorage.getItem("sv_name") || "";
+    document.getElementById("cust-phone").value = localStorage.getItem("sv_phone") || "";
+    document.getElementById("cust-address").value = localStorage.getItem("sv_address") || "";
+    init();
+};
+
+function init() {
+    const root = document.getElementById("sections");
+    root.innerHTML = data.map(cat => {
+        const items = Array.from({length: 10}, (_, i) => ({
+            name: `${cat.name} Premium ${i + 1}`,
+            price: cat.basePrice + (i * 20),
+            icon: cat.icon,
+            hasSize: cat.hasSize
+        }));
+        return `
+            <div class="section">
+                <div class="section-header"><h2>${cat.name}</h2><span class="view-all">View All →</span></div>
+                <div class="scroller">${items.map((item, idx) => `
+                    <div class="card ${idx >= 4 ? 'pc-only' : ''}" onclick='showDetail(${JSON.stringify(item)})'>
+                        <div class="img-placeholder">${item.icon}</div>
+                        <div class="meta"><h3>${item.name}</h3><p>₹${item.price}</p></div>
+                    </div>`).join("")}</div>
+            </div>`;
+    }).join("");
+}
+
+function showDetail(item) {
+    currentProduct = {...item, finalPrice: item.price};
+    selectedSize = item.hasSize ? "S" : "N/A";
+    document.getElementById("m-title").innerText = item.name;
+    document.getElementById("m-price").innerText = "₹" + item.price;
+    document.getElementById("f-price").innerText = "₹" + item.price;
+    document.getElementById("m-img").innerText = item.icon;
+
+    const sizeWrap = document.getElementById("m-sizes");
+    if(item.hasSize) {
+        document.getElementById("m-size-area").style.display = "block";
+        sizeWrap.innerHTML = ["S","M","L","XL","XXL"].map((s, idx) => 
+            `<div class="size-btn ${s==='S'?'active':''}" onclick="changeSize(this, '${s}', ${idx*100})">${s}</div>`
+        ).join("");
+    } else {
+        document.getElementById("m-size-area").style.display = "none";
+    }
+    document.getElementById("product-modal").style.display = "block";
+}
+
+function changeSize(el, s, extra) {
+    selectedSize = s;
+    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    currentProduct.finalPrice = currentProduct.price + extra;
+    document.getElementById("m-price").innerText = "₹" + currentProduct.finalPrice;
+    document.getElementById("f-price").innerText = "₹" + currentProduct.finalPrice;
+}
+
+function addToCart(e) {
+    e.stopPropagation(); 
+    const price = currentProduct.finalPrice || currentProduct.price;
+    cart.push({ name: currentProduct.name, size: selectedSize, price: price, icon: currentProduct.icon });
+    updateCartUI();
+    closeModal();
+}
+
+function updateCartUI() {
+    document.getElementById("cart-floater").style.display = cart.length > 0 ? "block" : "none";
+    document.getElementById("cart-count").innerText = cart.length;
+}
+
+function openCart() {
+    let total = 0;
+    const list = document.getElementById("cart-items-list");
+    list.innerHTML = cart.map((item, idx) => {
+        total += item.price;
+        return `<div style="display:flex; justify-content:space-between; padding:15px 0; border-bottom:1px solid #eee;">
+            <div><b>${item.name}</b> (${item.size})</div>
+            <div>₹${item.price} <button onclick="cart.splice(${idx},1); updateCartUI(); openCart();" style="color:red; border:none; background:none; cursor:pointer; font-weight:800; margin-left:10px;">✕</button></div>
+        </div>`;
+    }).join("");
+    if(cart.length === 0) { list.innerHTML = "<p style='text-align:center; padding:20px;'>Your cart is empty</p>"; }
+    document.getElementById("cart-total").innerText = total;
+    document.getElementById("cart-modal").style.display = "block";
+}
+
+function openCheckoutModal(source) {
+    checkoutSource = source;
+    document.getElementById("checkout-modal").style.display = "block";
+}
+
+function finalizeOrder() {
+    const name = document.getElementById("cust-name").value;
+    const phone = document.getElementById("cust-phone").value;
+    const addr = document.getElementById("cust-address").value;
+    if(!name || !phone || !addr) { alert("Please fill all details"); return; }
+    localStorage.setItem("sv_name", name);
+    localStorage.setItem("sv_phone", phone);
+    localStorage.setItem("sv_address", addr);
+    let msg = `*NEW ORDER - Sangeetha Vasthralayam* 👋\n\n*Customer:* ${name}\n*Phone:* ${phone}\n*Address:* ${addr}\n\n*Items:*\n`;
+    let total = 0;
+    if(checkoutSource === 'direct') {
+        msg += `- ${currentProduct.name} (${selectedSize}) [${currentProduct.icon}] - ₹${currentProduct.finalPrice}\n`;
+        total = currentProduct.finalPrice;
+    } else {
+        cart.forEach((item, i) => { msg += `${i+1}. ${item.name} (${item.size}) [${item.icon}] - ₹${item.price}\n`; total += item.price; });
+    }
+    msg += `\n*Total Amount: ₹${total}*`;
+    window.open(`https://wa.me/919618476045?text=${encodeURIComponent(msg)}`);
+}
+
+function closeModal() { document.getElementById("product-modal").style.display = "none"; }
+function closeCart() { document.getElementById("cart-modal").style.display = "none"; }
+function closeCheckout() { document.getElementById("checkout-modal").style.display = "none"; }
+</script>
+</body>
+</html>
