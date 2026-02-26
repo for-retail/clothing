@@ -83,7 +83,7 @@
     <div class="contact-card">
         <h2 style="font-family: Cinzel; color: var(--orange-gold); font-size: 1.2rem;">Contact Us</h2>
         <div class="social-btns">
-            <a href="https://wa.me/916303594257" class="wa-link"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+            <a href="https://wa.me/91XXXXXXXXXX" class="wa-link"><i class="fab fa-whatsapp"></i> WhatsApp</a>
             <a href="https://instagram.com/YOUR_USER_NAME" class="ig-link"><i class="fab fa-instagram"></i> Instagram</a>
         </div>
     </div>
@@ -484,23 +484,35 @@ function handleOrder(e) {
     msg += `*Customer:* ${name}\n`;
     msg += `*Mobile:* ${phone}\n`;
     msg += `*Address:* ${address}\n`;
-    msg += `------------------------------\n`;
-    msg += `*ORDERED ITEMS:*\n`;
+    msg += `------------------------------\n\n`;
+    msg += `*ORDERED ITEMS:*\n\n`;
 
     let total = 0;
     const items = orderSource === 'direct' ? [{...currentItem, selectedSize, finalPrice: currentPrice}] : cart;
     
     items.forEach((it, i) => {
-        msg += `${i+1}. [${it.id}] ${it.name}\n   Size: ${it.selectedSize} | Price: ₹${it.finalPrice}\n`;
+        msg += `*Item ${i+1}:* ${it.name}\n`;
+        msg += `*ID:* ${it.id}\n`;
+        msg += `*Size:* ${it.selectedSize}\n`;
+        msg += `*Price:* ₹${it.finalPrice}\n`;
+        // This adds the image link so WhatsApp shows the preview
+        if(it.images[0].length > 10) { 
+            msg += `*View Product:* ${it.images[0]}\n`; 
+        }
+        msg += `\n`;
         total += it.finalPrice;
     });
 
     msg += `------------------------------\n`;
-    msg += `*TOTAL AMOUNT: ₹${total}*`;
+    msg += `*GRAND TOTAL: ₹${total}*\n`;
+    msg += `------------------------------\n`;
+    msg += `_Please confirm my order!_`;
     
-    // Change WhatsApp number below
-    window.open(`https://wa.me/916303594257?text=${encodeURIComponent(msg)}`);
+    // Corrected WhatsApp Redirect
+const waNumber = "916303594257"; 
+window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`);
 }
+
 
 function openCategoryView(catKey) {
     const cat = allProducts[catKey];
