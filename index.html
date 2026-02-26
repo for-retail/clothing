@@ -3,534 +3,386 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sangeetha Vasthralayam | Premium Ethnic Wear</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>NIKHIL GOWTHAM | SYSTEM ARCHITECT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,600&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <style>
-        :root { --orange-gold: #FF8C00; --orange-light: #FFB347; --black: #0F0F0F; --ivory: #FDFBF7; --text: #1A1A1A; --success: #2ecc71; --danger: #e74c3c; }
-        * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.3s ease; }
-        body { font-family: 'Montserrat', sans-serif; background: var(--ivory); color: var(--text); overflow-x: hidden; }
+        :root { 
+            --paper: #f4f1ea; 
+            --ink: #1a1a1a; 
+            --accent: #8b7355; 
+            --card: rgba(255, 255, 255, 0.7); 
+        }
+        body.night-mode { 
+            --paper: #05070a; 
+            --ink: #e0e0e0; 
+            --accent: #dda15e; 
+            --card: rgba(18, 20, 29, 0.8); 
+        }
 
-        header { background: var(--black); padding: 15px 20px; border-bottom: 4px solid var(--orange-gold); position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; }
-        header h1 { font-family: 'Cinzel'; color: var(--orange-gold); font-size: 1.2rem; letter-spacing: 1px; flex: 1; text-align: center; margin-left: 40px; }
-        .insta-head { color: #E4405F; font-size: 1.5rem; text-decoration: none; }
+        /* --- ADD THIS AROUND LINE 15 --- */
+        #status-box {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    z-index: 10001;
+    background: rgba(var(--card-rgb), 0.4); /* Requires a RGB variable or just use rgba(255,255,255,0.4) */
+    backdrop-filter: blur(12px);
+    border-left: 3px solid var(--accent); /* Architect accent line */
+    padding: 8px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 10px 10px 30px rgba(0,0,0,0.05);
+    font-family: 'Montserrat';
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
 
-        .status-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.6rem; font-weight: 800; text-transform: uppercase; margin-top: 5px;}
-        .status-open { background: var(--success); color: white; }
-        .status-closed { background: var(--danger); color: white; }
+#current-activity {
+    font-family: 'Courier New', Courier, monospace; /* Terminal font */
+    color: var(--accent);
+    border-right: 2px solid var(--accent); /* Cursor blink */
+    white-space: nowrap;
+    overflow: hidden;
+    animation: blink-cursor 0.8s step-end infinite;
+}
 
-        .section { padding: 25px 0 25px 15px; }
-        .section-header { display: flex; justify-content: space-between; align-items: center; padding-right: 15px; margin-bottom: 15px; }
-        .section-header h2 { font-family: 'Cinzel'; font-size: 1.1rem; color: var(--orange-gold); }
-        .view-all { color: var(--orange-gold); font-weight: 700; font-size: .75rem; cursor: pointer; border: 1px solid var(--orange-gold); padding: 4px 8px; border-radius: 4px; }
+@keyframes blink-cursor {
+    from, to { border-color: transparent }
+    50% { border-color: var(--accent); }
+}
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(3.5); opacity: 0; }
+        }
 
-        .scroller { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 15px; scroll-behavior: smooth; }
-        .scroller::-webkit-scrollbar { display: none; }
+        /* Ensure mobile doesn't overlap with hero text */
+        @media (max-width: 768px) {
+            #status-box { top: 20px; left: 20px; font-size: 8px; padding: 6px 10px; }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         
-        .grid-view { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px; }
-        @media (min-width: 768px) { .grid-view { grid-template-columns: repeat(5, 1fr); } }
+        @media (pointer: fine) {
+            body, a, button, .btn, .mini-paper { cursor: none; }
+            #cursor { display: block; }
+        }
+        @media (pointer: coarse) {
+            #cursor { display: none; }
+            * { cursor: auto !important; }
+        }
 
-        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; min-width: 160px; }
-        .img-box { height: 200px; width: 100%; overflow: hidden; background: #f0f0f0; display: flex; align-items: center; justify-content: center; }
-        .img-box img { width: 100%; height: 100%; object-fit: cover; }
-        .meta { padding: 10px; }
-        .meta h3 { font-size: .75rem; height: 30px; overflow: hidden; color: #444; }
-        .meta p { color: var(--orange-gold); font-weight: 800; margin-top: 5px; }
+        body { 
+            background: var(--paper); 
+            color: var(--ink); 
+            font-family: 'Cormorant Garamond', serif; 
+            overflow-x: hidden; 
+            transition: background 0.5s ease; 
+        }
 
-        /* Modals */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; overflow-y: auto; padding: 20px 0; }
-        .modal-body { background: white; margin: 0 auto; max-width: 500px; border-radius: 20px; padding: 20px; position: relative; animation: slideUp 0.3s; }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        #canvas-container { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+        #cursor { 
+            position: fixed; width: 15px; height: 15px; background: var(--accent); 
+            border-radius: 50%; z-index: 999999; pointer-events: none; 
+            transform: translate(-50%, -50%); mix-blend-mode: difference; 
+        }
 
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 5px; color: #666; }
-        .input-group input, .input-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; font-size: 0.9rem; }
+        #mode-switch { 
+            position: fixed; top: 30px; right: 30px; z-index: 10001; 
+            width: 50px; height: 50px; border-radius: 50%; cursor: pointer; 
+            background: var(--card); border: 1px solid var(--ink); 
+            display: flex; align-items: center; justify-content: center; 
+            box-shadow: 4px 4px 0px var(--ink); transition: 0.3s;
+            backdrop-filter: blur(5px);
+        }
 
-        .size-btn { padding: 10px; border: 2px solid #eee; border-radius: 8px; cursor: pointer; font-weight: 700; flex: 1; text-align: center; font-size: 0.7rem; min-width: 65px; }
-        .size-btn.active { border-color: var(--orange-gold); color: var(--orange-gold); background: #fff8f0; }
-
-        .thumb-row { display: flex; gap: 8px; margin: 15px 0; overflow-x: auto; padding-bottom: 5px; }
-        .thumb-box { width: 60px; height: 80px; border: 2px solid #eee; border-radius: 5px; flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; background: #f9f9f9; overflow: hidden; }
-        .thumb-box.active { border-color: var(--orange-gold); }
-        .thumb-box img { width: 100%; height: 100%; object-fit: cover; }
-
-        #cart-floater { position: fixed; bottom: 20px; right: 20px; background: var(--orange-gold); color: white; padding: 15px 20px; border-radius: 50px; font-weight: 800; z-index: 999; box-shadow: 0 5px 15px rgba(255,140,0,0.4); cursor: pointer; }
+        .wrapper { position: relative; z-index: 10; width: 100%; }
         
-        .cart-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #eee; }
-        .cart-img { width: 50px; height: 50px; border-radius: 5px; overflow: hidden; background: #eee; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        section { 
+            min-height: 100vh; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; padding: 80px 10%; 
+            text-align: center; opacity: 0; transform: translateY(30px);
+            transition: all 1s ease-out;
+        }
+        section.visible { opacity: 1; transform: translateY(0); }
 
-        .contact-card { background: white; margin: 20px 15px; padding: 25px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .social-btns { display: flex; justify-content: center; gap: 15px; margin-top: 15px; }
-        .wa-link { background: #25D366; color: white; padding: 12px 20px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 0.85rem; }
-        .ig-link { background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); color: white; padding: 12px 20px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 0.85rem; }
+        .info-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 30px; width: 100%; max-width: 1000px; margin: 40px 0; 
+        }
+        .info-card { 
+            background: var(--card); padding: 40px; 
+            border: 1px solid rgba(0,0,0,0.05); text-align: left; 
+            box-shadow: 8px 8px 0px var(--ink); 
+            backdrop-filter: blur(10px);
+        }
 
-        footer { background: #000; color: #666; text-align: center; padding: 30px; font-size: 0.7rem; }
+        .paper-row {
+            display: flex; justify-content: center; gap: 25px;
+            flex-wrap: wrap; perspective: 1000px; margin-top: 20px; width: 100%;
+        }
+        .mini-paper {
+            width: 140px; height: 190px; background: #fff; border: 1px solid rgba(0,0,0,0.08);
+            cursor: pointer; position: relative; transition: 0.5s;
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 15px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        }
+        .mini-paper::after {
+            content: ""; position: absolute; top: 20px; left: 15px; right: 15px; 
+            background: repeating-linear-gradient(to bottom, transparent, transparent 10px, rgba(0,0,0,0.05) 10px, rgba(0,0,0,0.05) 11px);
+            height: 100px;
+        }
+        .mini-paper span { font-family: 'Montserrat'; font-size: 11px; font-weight: 600; text-transform: uppercase; color: #1a1a1a; z-index: 2; }
+        .mini-paper:hover { transform: translateY(-15px) rotateX(10deg); box-shadow: 20px 30px 40px rgba(0,0,0,0.15); border-color: var(--accent); }
+        .mini-paper.blue-p { background: #e3e8f0; }
+
+        /* ADDED: OTHERS/LAB GRID */
+        .others-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px; width: 100%; max-width: 1200px; margin-top: 40px;
+        }
+        .lab-card {
+            background: var(--card); border: 1px solid var(--ink); padding: 20px;
+            text-align: left; box-shadow: 6px 6px 0px var(--ink);
+        }
+
+        #reading-page {
+            position: fixed; inset: 0; background: var(--paper); z-index: 50000;
+            display: none; flex-direction: column; padding: 60px 10%; overflow-y: auto; opacity: 0;
+        }
+
+        .btn { 
+            background: var(--card); border: 2px solid var(--ink); color: var(--ink); 
+            padding: 18px 40px; font-family: 'Montserrat'; font-size: 12px; 
+            font-weight: 600; letter-spacing: 2px; transition: 0.4s; 
+            display: inline-flex; align-items: center; gap: 12px; 
+            box-shadow: 6px 6px 0px var(--ink); text-decoration: none; backdrop-filter: blur(5px);
+        }
+        .btn:hover { transform: translate(-3px, -3px); box-shadow: 10px 10px 0px var(--accent); background: var(--ink); color: var(--paper); }
+
+        h1 { font-size: clamp(50px, 12vw, 120px); font-style: italic; line-height: 0.85; }
+        .tag { font-family: 'Montserrat'; font-size: 10px; letter-spacing: 5px; color: var(--accent); text-transform: uppercase; margin-bottom: 15px; display: block; }
+
+        .resume-bridge { width: 100%; border-top: 1px dashed var(--accent); border-bottom: 1px dashed var(--accent); padding: 100px 0; margin: 40px 0; }
     </style>
 </head>
 <body>
+    <div id="status-box">
+    <div class="pulse-dot"></div>
+    <span>Current Protocol: <span id="current-activity" style="color: var(--accent);">Searching for Core Nodes (Job Hunt)</span></span>
+</div>
 
-<header>
-    <div style="width: 30px;"></div>
-    <h1 onclick="location.reload()" style="cursor:pointer">Sangeetha Vasthralayam</h1>
-    <a href="https://instagram.com/YOUR_USER_NAME" target="_blank" class="insta-head"><i class="fab fa-instagram"></i></a>
-</header>
+    <div id="cursor"></div>
+    <div id="mode-switch" onclick="toggleMode()"><i class="fa-solid fa-moon" id="mode-icon"></i></div>
+    <div id="canvas-container"></div>
 
-<div id="home-container">
-    <div style="text-align: center; padding-top: 10px;" id="store-status"></div>
-    <div id="sections"></div>
-    
-    <div class="contact-card">
-        <h2 style="font-family: Cinzel; color: var(--orange-gold); font-size: 1.2rem;">Contact Us</h2>
-        <div class="social-btns">
-            <a href="https://wa.me/91XXXXXXXXXX" class="wa-link"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-            <a href="https://instagram.com/YOUR_USER_NAME" class="ig-link"><i class="fab fa-instagram"></i> Instagram</a>
+    <div id="reading-page">
+        <div style="max-width: 800px; margin: 0 auto; width: 100%;">
+            <button class="btn" onclick="closeReadingPage()" style="margin-bottom: 50px;">
+                <i class="fa-solid fa-arrow-left"></i> BACK TO REPOSITORY
+            </button>
+            <h1 id="page-title" style="font-size: 60px; margin-bottom: 20px;">TITLE</h1>
+            <span id="page-tag" class="tag">Category</span>
+            <div id="page-content" style="margin-top: 50px; font-size: 24px; line-height: 1.6; font-family: 'Montserrat'; font-weight: 300;"></div>
         </div>
     </div>
-</div>
 
-<div id="category-container" style="display:none">
-    <div style="background: white; padding: 15px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 20px; position: sticky; top: 60px; z-index: 90;">
-        <button onclick="closeCategoryView()" style="background: #222; color: white; border: none; padding: 8px 12px; border-radius: 5px;">← BACK</button>
-        <h2 id="cat-title" style="font-family: Cinzel; color: var(--orange-gold); font-size: 1rem;"></h2>
-    </div>
-    <div id="category-grid" class="grid-view"></div>
-</div>
+    <div class="wrapper">
+        <section id="hero">
+            <span class="tag">Architecture & Design</span>
+            <h1>Nikhil Gowtham</h1>
+            <p style="font-family:'Montserrat'; letter-spacing:6px; font-size:12px; margin-top:20px; font-weight: 600;">SYSTEM ARCHITECT | STORYTELLER</p>
+        </section>
 
-<div id="cart-floater" onclick="openCart()" style="display:none;">🛒 CART (<span id="cart-count">0</span>)</div>
-
-<div id="product-modal" class="modal">
-    <div class="modal-body">
-        <button onclick="closeModal()" style="float:right; border:none; background:none; font-size:1.5rem;">✕</button>
-        <div id="main-img-cont" style="height:350px; width:100%; background:#f9f9f9; border-radius:15px; overflow:hidden; display: flex; align-items: center; justify-content: center;">
-            <img id="m-main-pic" src="" style="width:100%; height:100%; object-fit:contain;">
-        </div>
-        <div class="thumb-row" id="m-thumbs"></div>
-        <h2 id="m-title" style="font-family:Cinzel; margin-top:10px; font-size: 1.1rem;"></h2>
-        <p id="m-price" style="font-size:1.6rem; font-weight:800; color:var(--orange-gold);"></p>
-        
-        <div id="size-section">
-            <p style="font-size:0.7rem; font-weight:700; color:#888; margin-top: 10px;">SELECT SIZE *</p>
-            <div id="m-sizes" style="display:flex; gap:8px; margin-top:10px; flex-wrap: wrap;"></div>
-        </div>
-
-        <div style="margin-top:20px; display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-            <button onclick="addToCart()" style="background:#222; color:white; border:none; padding:15px; border-radius:10px; font-weight:700;">+ CART</button>
-            <button onclick="openCheckout('direct')" style="background:var(--orange-gold); color:white; border:none; padding:15px; border-radius:10px; font-weight:700;">BUY NOW</button>
-        </div>
-    </div>
-</div>
-
-<div id="checkout-modal" class="modal">
-    <div class="modal-body">
-        <h2 style="font-family:Cinzel; margin-bottom:15px; font-size: 1.2rem;">Delivery Details</h2>
-        <form id="shipping-form" onsubmit="handleOrder(event)">
-            <div class="input-group">
-                <label>CUSTOMER NAME *</label>
-                <input type="text" id="cust-name" required placeholder="Enter your full name">
-            </div>
-            <div class="input-group">
-                <label>PHONE NUMBER *</label>
-                <input type="tel" id="cust-phone" required pattern="[0-9]{10}" placeholder="10 Digit Number">
-            </div>
-            <div class="input-group">
-                <label>FULL ADDRESS *</label>
-                <textarea id="cust-address" required rows="3" placeholder="House No, City, Pincode"></textarea>
-            </div>
-            <button type="submit" style="width:100%; background:var(--orange-gold); color:white; padding:18px; border:none; border-radius:12px; font-weight:800;">CONFIRM & SEND ON WHATSAPP</button>
-            <button type="button" onclick="closeCheckout()" style="width:100%; margin-top:10px; background:none; border:none; color:#888;">Cancel</button>
-        </form>
-    </div>
-</div>
-
-<div id="cart-modal" class="modal">
-    <div class="modal-body">
-        <h2 style="font-family: Cinzel; font-size: 1.2rem;">Your Cart</h2>
-        <div id="cart-items-list" style="max-height: 300px; overflow-y: auto; margin-top: 10px;"></div>
-        <div id="cart-total" style="margin-top: 15px; font-weight: 800; border-top: 1px solid #eee; padding-top: 10px; text-align: right; color: var(--orange-gold);"></div>
-        <button onclick="openCheckout('cart')" style="width:100%; background:var(--orange-gold); color:white; padding:15px; margin-top:20px; border:none; border-radius:10px; font-weight: 700;">PROCEED TO CHECKOUT</button>
-        <button onclick="closeCart()" style="width:100%; border:none; background:none; margin-top:10px;">Close</button>
-    </div>
-</div>
-
-<footer>© 2026 SANGEETHA VASTHRALAYAM</footer>
-
-<script>
-// --- MASTER DATA ---
-// Ikkada nuvvu products add cheyali mawa. Chudu ela undo:
-const allProducts = {
-    "kurtas": { 
-    displayName: "Premium Kurtas", 
-    hasSize: true, 
-    items: [
-        { 
-            id: "KRT-01", 
-            name: "Floral Anarkali Kurta", 
-            images: [
-                "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/u/z/j/s-box-patbro-original-imah3ptsufqegbp8.jpeg?q=90", 
-                "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/o/w/9/s-box-patbro-original-imah3ptszjcy9m5x.jpeg?q=90",
-                "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/c/m/u/s-box-patbro-original-imah3ptsdgvej7he.jpeg?q=90",
-                "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/2/q/w/3xl-box-patbro-original-imahfmsk6vv26svx.jpeg?q=90"
-            ],
-            sizePrices: { 
-                "S": 899, "M": 999, "L": 1099, "XL": 1199, "XXL": 1299, "XXXL": 1399 
-            } 
-        },
-        { 
-            id: "KRT-02", 
-            name: "Cotton Silk Party Kurta", 
-            images: [
-                "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/t/b/t/m-151to152-hetsa-original-imafyz2n5xzzgb2m-bb.jpeg?q=90", 
-                "https://rukminim2.flixcart.com/image/1536/1536/kj0bp8w0-0/kurta/h/c/m/m-151to152-hetsa-original-imafyz2nqu7qvzwz.jpeg?q=90", 
-                "https://rukminim2.flixcart.com/image/1536/1536/l3uhvgw0/shopsy-kurta/n/m/4/l-151to152-shopglobal-original-imafyz2nz5h87q6y.jpeg?q=90", 
-            ],
-            sizePrices: { 
-                "S": 1200, "M": 1250, "L": 1300, "XL": 1350, "XXL": 1400, "XXXL": 1500 
-            } 
-        },
-        { 
-            id: "KRT-03", // <--- ID marchanu
-            name: "Cotton Silk Party Kurta", 
-            images: [
-                "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/g/6/l/xl-ssimran-petopian-original-imahje8zqcanmzbg.jpeg?q=90", 
-                "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/s/i/2/xl-ssimran-petopian-original-imahje8zrgc38ybg.jpeg?q=90", 
-                "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/a/m/2/xl-ssimran-petopian-original-imahje8zeywwzqfz.jpeg?q=90", 
-                "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/c/5/h/xl-ssimran-petopian-original-imahje8zaqs3xnpg.jpeg?q=90",
-                "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/v/t/e/xl-ssimran-petopian-original-imahje8zzzphxsng.jpeg?q=90"
-            ],
-            sizePrices: { 
-                "S": 1200, "M": 1250, "L": 1300, "XL": 1350, "XXL": 1400, "XXXL": 1500 
-            } 
-        },
-        { 
-            id: "KRT-04", // <--- ID marchanu
-            name: "Cotton Silk Party Kurta", 
-            images: [
-                "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/7/s/u/4xl-1212-rare-thread-original-imahg55mwsgznk4y.jpeg?q=90", 
-                "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/1/z/9/4xl-1212-rare-thread-original-imahg55mtvwmqrjn.jpeg?q=90", 
-                "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/a/y/p/4xl-1212-rare-thread-original-imahgrxbscxfbsj3.jpeg?q=90", 
-                "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/d/3/n/4xl-1212-rare-thread-original-imahg55mud9szzsw.jpeg?q=90"
-            ],
-            sizePrices: { 
-                "S": 1200, "M": 1250, "L": 1300, "XL": 1350, "XXL": 1400, "XXXL": 1500 
-            } 
-        },
-        { 
-            id: "KRT-04", // <--- ID marchanu
-            name: "Cotton Silk Party Kurta", 
-            images: [
-                "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/w/e/d/-original-imahchgydh44gdkq.jpeg?q=90", 
-                "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/k/e/f/-original-imahjzwce6gzmgwq.jpeg?q=90", 
-                "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/y/v/p/xxl-long-kurti-fabzari-original-imahfyy3erzsctay.jpeg?q=90g", 
-                "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/r/r/b/-original-imahjzwcagthxeja.jpeg?q=90"
-            ],
-            sizePrices: { 
-                "S": 1200, "M": 1250, "L": 1300, "XL": 1350, "XXL": 1400, "XXXL": 1500 
-            } 
-        }
-    ] 
-},// <--- Prathi product tharvatha comma (,) marchipoku mawa!
-
-    "tops": { 
-    displayName: "Trendy Tops", 
-    hasSize: true, 
-    items: [
-        {
-            id: "TP-01",
-            name: "Western Party Top",
-            images: ["https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/k/x/p/xxl-rs-1065green-kurti-nakshkurtis-original-imahjsrmzggv4zef.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/i/f/n/l-rs-1065green-kurti-nakshkurtis-original-imahjsrmbbmzzegk.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/l/m/z/xl-rs-1065green-kurti-nakshkurtis-original-imahjsrmhaymgsvg.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/z/g/c/xl-rs-1065green-kurti-nakshkurtis-original-imahjsrmhxzr4xmv.jpeg?q=90"],
-            sizePrices: { "S": 450, "M": 450, "L": 500, "XL": 550, "XXL": 600, "XXXL": 650 }
-        }, 
-        {
-            id: "TP-02",
-            name: "Floral Summer Crop Top", 
-            images: ["https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/b/d/z/l-rs-1065green-kurti-nakshkurtis-original-imahjsrmkahhywch.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/w/1/6/m-rs-1065green-kurti-nakshkurtis-original-imahjsrmwmagke6g.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/kurta/u/4/a/xl-rs-1065green-kurti-nakshkurtis-original-imahjsrmvqvjmsgz.jpeg?q=90"],
-            sizePrices: { "S": 399, "M": 399, "L": 449, "XL": 499, "XXL": 549, "XXXL": 599 }
-        },
-        {
-            id: "TP-03",
-            name: "Floral Summer Crop Top", 
-            images: ["https://rukminim2.flixcart.com/image/1536/1536/xif0q/top/t/u/2/s-1-5014-raave-original-imah9fhcpr2jg5gh.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/top/z/k/i/l-1-dd-078-black-multi-drape-and-dazzle-original-imahaxucmhucfzvp.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/top/r/q/j/l-1-dd-078-black-multi-drape-and-dazzle-original-imahaxuccbcyrfg9.jpeg?q=90"],
-            sizePrices: { "S": 399, "M": 399, "L": 449, "XL": 499, "XXL": 549, "XXXL": 599 }
-        },
-        {
-            id: "TP-04",
-            name: "Floral Summer Crop Top", 
-            images: ["https://rukminim2.flixcart.com/image/1536/1536/xif0q/top/r/z/u/xl-1-dd-078-black-multi-drape-and-dazzle-original-imahksaegn5q6n9n.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/top/9/a/s/l-1-ser021-cutext-fashion-original-imahksaaundvzy3e.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/top/j/4/i/l-1-ser021-cutext-fashion-original-imahksaakyznkrv5.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/top/6/b/g/l-1-ser021-cutext-fashion-original-imahksaavbnchger.jpeg?q=90"],
-            sizePrices: { "S": 399, "M": 399, "L": 449, "XL": 499, "XXL": 549, "XXXL": 599 }
-        },
-        {
-            id: "TP-05",
-            name: "Floral Summer Crop Top", 
-            images: ["https://rukminim2.flixcart.com/image/1536/1536/xif0q/top/i/e/j/m-125-blue-top-cavercha-original-imahc6gxdzgfdnzu.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/top/j/w/a/m-125-blue-top-cavercha-original-imahc6gxuhyrzwg4.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/top/r/c/o/-original-imahkfgnzsw72utr.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/top/h/1/c/m-125-blue-top-cavercha-original-imahc6gxzzjhjtqs.jpeg?q=90"],
-            sizePrices: { "S": 399, "M": 399, "L": 449, "XL": 499, "XXL": 549, "XXXL": 599 }
-        },
-        {
-            id: "TP-06",
-            name: "Floral Summer Crop Top", 
-            images: ["https://rukminim2.flixcart.com/image/1536/1536/xif0q/top/5/x/k/xl-1-104-green-ps-fashion-original-imahgakgzkgp2zy5.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/top/s/h/d/m-1-104-green-ps-fashion-original-imahgakgaqj39x82.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/top/y/u/w/s-1-tf-026-gxs-original-imahg842msrrr44h.jpeg?q=90"],
-            sizePrices: { "S": 399, "M": 399, "L": 449, "XL": 499, "XXL": 549, "XXXL": 599 }
-        }
-    ] 
-            
- 
-    },
-    "leggings": { 
-        displayName: "Cotton Leggings", 
-        hasSize: true, 
-        items: [
-             {
-                id: "LG-01",
-                name: "Super Soft Leggings",
-                images: ["img1_url", "img2_url", "img3_url", "img4_url"],
-                sizePrices: { "S": 299, "M": 299, "L": 349, "XL": 349, "XXL": 399, "XXXL": 449 }
-            },
-            {
-                id: "LG-01",
-                name: "Super Soft Leggings",
-                images: ["img1_url", "img2_url", "img3_url", "img4_url"],
-                sizePrices: { "S": 299, "M": 299, "L": 349, "XL": 349, "XXL": 399, "XXXL": 449 }
-            },
-            {
-                id: "LG-01",
-                name: "Super Soft Leggings",
-                images: ["img1_url", "img2_url", "img3_url", "img4_url"],
-                sizePrices: { "S": 299, "M": 299, "L": 349, "XL": 349, "XXL": 399, "XXXL": 449 }
-            },
-            {
-                id: "LG-01",
-                name: "Super Soft Leggings",
-                images: ["img1_url", "img2_url", "img3_url", "img4_url"],
-                sizePrices: { "S": 299, "M": 299, "L": 349, "XL": 349, "XXL": 399, "XXXL": 449 }
-            },
-            {
-                id: "LG-01",
-                name: "Super Soft Leggings",
-                images: ["img1_url", "img2_url", "img3_url", "img4_url"],
-                sizePrices: { "S": 299, "M": 299, "L": 349, "XL": 349, "XXL": 399, "XXXL": 449 }
-            },
-        ] 
-    },
-    "sarees": { 
-        displayName: "Sarees Collection", 
-        hasSize: false, 
-        items: [
-            { 
-                id: "S-01", 
-                name: "Designer Silk Saree", 
-                price: 3500, 
-                images: ["https://rukminim2.flixcart.com/image/1536/1536/xif0q/sari/u/d/w/free-adhya-350-morpich-airevo-unstitched-original-imahdr6kgxkyxsag.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/sari/c/n/a/free-hm-350-gariya-unstitched-original-imahhttxuqhxs59y.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/sari/z/k/o/free-hm-350-gariya-unstitched-original-imahhttxvfyzfq9g.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/sari/4/u/v/free-hm-350-gariya-unstitched-original-imahhttxynhgnhwz.jpeg?q=90"] 
-            },
-            { 
-                id: "S-01", 
-                name: "Designer Silk Saree", 
-                price: 3500, 
-                images: ["https://rukminim2.flixcart.com/image/1536/1536/xif0q/shopsy-sari/o/4/t/free-s-216-wine-rj-creation-unstitched-original-imahjgq4uhsvh4yb.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/sari/l/v/a/free-s-216-rj-creation-unstitched-original-imahg3egx5xfwgva.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/shopsy-sari/f/z/s/free-s-216-wine-rj-creation-unstitched-original-imahjgq4rhmz8ubw.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/shopsy-sari/h/s/p/free-s-216-wine-rj-creation-unstitched-original-imahjgq4tzqqzzg2.jpeg?q=90"] 
-            },
-            { 
-                id: "S-01", 
-                name: "Designer Silk Saree", 
-                price: 3500, 
-                images: ["https://rukminim2.flixcart.com/image/1536/1536/xif0q/shopsy-sari/z/n/o/free-shamsa2-skyblue-spy-silkora-unstitched-original-imahguf44xgyvtdz.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/shopsy-sari/p/m/c/free-shamsa2-skyblue-spy-silkora-unstitched-original-imahguf4yjpw7wqs.jpeg?q=90"] 
-            },
-            { 
-                id: "S-01", 
-                name: "Designer Silk Saree", 
-                price: 3500, 
-                images: ["https://rukminim2.flixcart.com/image/1536/1536/xif0q/sari/f/4/i/free-doshi-myraani-unstitched-original-imahhjqhyadwngcf.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/sari/t/o/u/free-doshi-myraani-unstitched-original-imahhjqhhrq9zaqu.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/sari/8/h/o/free-doshi-myraani-unstitched-original-imahhjqhgqjyyyhy.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/sari/y/l/3/free-doshi-myraani-unstitched-original-imahhjqhgqgarrhr.jpeg?q=90"] 
-            },
-            { 
-                id: "S-01", 
-                name: "Designer Silk Saree", 
-                price: 3500, 
-                images: ["https://rukminim2.flixcart.com/image/1536/1536/xif0q/sari/r/7/2/free-king-green-superlaxmi-unstitched-original-imahkhxjnfcgfbjf.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/sari/x/c/w/free-king-green-superlaxmi-unstitched-original-imahkhxjrgb2uftb.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/sari/i/t/f/free-king-green-superlaxmi-unstitched-original-imahkhxjkrzpzhkf.jpeg?q=90", "https://rukminim2.flixcart.com/image/1536/1536/xif0q/sari/m/u/w/free-king-green-superlaxmi-unstitched-original-imahkhxjmvcfzzmw.jpeg?q=90"] 
-            },
-
-        ]
-    }
-};
-// Generate test data with custom prices
-for(let i=1; i<=10; i++) {
-    allProducts.kurtas.items.push({
-        id: "KRT-"+i, name: "Kurta Set #"+i, images: ["👘"],
-        sizePrices: { "S": 800, "M": 850, "L": 900, "XL": 950, "XXL": 1000, "XXXL": 1100 }
-    });
-    allProducts.leggings.items.push({
-        id: "LEG-"+i, name: "Leggings Soft #"+i, images: ["👖"],
-        sizePrices: { "S": 350, "M": 350, "L": 400, "XL": 400, "XXL": 450, "XXXL": 500 }
-    });
-}
-
-let cart = [];
-let currentItem = {};
-let selectedSize = "";
-let currentPrice = 0;
-let orderSource = "";
-
-window.onload = () => { updateStatus(); renderHome(); };
-
-function updateStatus() {
-    const hr = new Date().getHours();
-    document.getElementById("store-status").innerHTML = (hr >= 9 && hr <= 22) ? `<span class="status-badge status-open">● Shop Open</span>` : `<span class="status-badge status-closed">● Shop Closed</span>`;
-}
-
-function renderHome() {
-    const root = document.getElementById("sections");
-    root.innerHTML = Object.keys(allProducts).map(catKey => {
-        const cat = allProducts[catKey];
-        if(!cat.items.length) return "";
-        return `
-            <div class="section">
-                <div class="section-header">
-                    <h2>${cat.displayName}</h2>
-                    <span class="view-all" onclick="openCategoryView('${catKey}')">View All</span>
+        <section id="identity">
+            <span class="tag">01. Protocols</span>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3 style="font-family:'Montserrat'; letter-spacing:2px; text-transform:uppercase; font-size:14px;">Professional</h3>
+                    <p style="margin-top:20px; font-size:22px; line-height:1.4;">Fametoonz Hub: Orchestrating 10k+ assets. Building episodic IP pipelines and production logic.</p>
                 </div>
-                <div class="scroller">${cat.items.slice(0, 10).map(i => renderCard(i, cat.hasSize)).join("")}</div>
-            </div>`;
-    }).join("");
-}
+                <div class="info-card">
+                    <h3 style="font-family:'Montserrat'; letter-spacing:2px; text-transform:uppercase; font-size:14px;">Personal</h3>
+                    <p style="margin-top:20px; font-size:22px; line-height:1.4;">Based in Tirupati. Designing human-centric systems through narrative and technology.</p>
+                </div>
+            </div>
+        </section>
 
-function renderCard(item, hasSize) {
-    const content = item.images[0].length <= 4 ? `<span style="font-size:4rem">${item.images[0]}</span>` : `<img src="${item.images[0]}">`;
-    const displayPrice = item.sizePrices ? item.sizePrices["S"] : item.price;
-    return `<div class="card" onclick='openProduct(${JSON.stringify({...item, hasSize})})'>
-        <div class="img-box">${content}</div>
-        <div class="meta"><h3>${item.name}</h3><p>₹${displayPrice}</p></div>
-    </div>`;
-}
+        <section id="id-vault">
+            <span class="tag">02. The Repository</span>
+            <h2 style="font-size: 50px; font-style: italic; margin-bottom: 10px;">The Vault</h2>
+            <p style="font-family:'Montserrat'; font-size:12px; margin-bottom:40px; opacity:0.8;">ORCHESTRATED NARRATIVES & SYSTEM LOGIC</p>
 
-function openProduct(item) {
-    currentItem = item; selectedSize = "";
-    document.getElementById("m-title").innerText = item.name;
-    const thumbBox = document.getElementById("m-thumbs");
-    thumbBox.innerHTML = item.images.map((img, idx) => `<div class="thumb-box ${idx===0?'active':''}" onclick="swapImg(this, '${img}')">${img.length<=4?`<span>${img}</span>`:`<img src="${img}">`}</div>`).join("");
-    swapImg(document.querySelector('.thumb-box'), item.images[0]);
+            <h3 style="font-family:'Montserrat'; letter-spacing:3px; font-size:14px; margin-bottom:20px; text-transform:uppercase;">Story Archives</h3>
+            <div class="paper-row">
+                <div class="mini-paper" onclick="openFullPage('stories', 0)"><span>Book of Balance</span></div>
+                <div class="mini-paper" onclick="openFullPage('stories', 1)"><span>MaHi</span></div>
+                <div class="mini-paper" onclick="openFullPage('stories', 2)"><span>Bite</span></div>
+                <div class="mini-paper" onclick="openFullPage('stories', 3)"><span>Loaning</span></div>
+                <div class="mini-paper" onclick="openFullPage('stories', 4)"><span>Loading</span></div>
+            </div>
 
-    const mSizes = document.getElementById("m-sizes");
-    if(item.hasSize) {
-        document.getElementById("size-section").style.display = "block";
-        mSizes.innerHTML = Object.keys(item.sizePrices).map(s => `<div class="size-btn" onclick="pickSize(this, '${s}', ${item.sizePrices[s]})">${s}<br><small>₹${item.sizePrices[s]}</small></div>`).join("");
-        document.getElementById("m-price").innerText = "Select Size";
-    } else {
-        document.getElementById("size-section").style.display = "none";
-        selectedSize = "N/A"; currentPrice = item.price;
-        document.getElementById("m-price").innerText = "₹" + item.price;
-    }
-    document.getElementById("product-modal").style.display = "block";
-}
+            <h3 style="font-family:'Montserrat'; letter-spacing:3px; font-size:14px; margin:40px 0 20px; text-transform:uppercase;">Game Blueprints</h3>
+            <div class="paper-row">
+                <div class="mini-paper blue-p" onclick="openFullPage('games', 0)"><span>Genview</span></div>
+                <div class="mini-paper blue-p" onclick="openFullPage('games', 1)"><span>Genview V2</span></div>
+            </div>
+        </section>
 
-function swapImg(el, src) {
-    const main = document.getElementById("main-img-cont");
-    main.innerHTML = src.length <= 4 ? `<span style="font-size:8rem">${src}</span>` : `<img src="${src}" style="width:100%; height:100%; object-fit:contain;">`;
-    document.querySelectorAll('.thumb-box').forEach(t => t.classList.remove('active'));
-    if(el) el.classList.add('active');
-}
+        <section class="resume-bridge">
+            <span class="tag">03. Credentials</span>
+            <button class="btn" onclick="openFullPage('resume', 0)" style="background:var(--accent); color:white; border:none;">
+                <i class="fa-solid fa-file-pdf"></i> RETRIEVE RESUME.PDF
+            </button>
+        </section>
 
-function pickSize(el, s, p) {
-    selectedSize = s; currentPrice = p;
-    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
-    el.classList.add('active');
-    document.getElementById("m-price").innerText = "₹" + p;
-}
+        <section id="contact">
+            <span class="tag">04. Initialize</span>
+            <h2 style="font-size:clamp(18px, 4vw, 35px); margin-bottom:30px; font-family:'Montserrat';">matchalanikhilgowtham@gmail.com</h2>
+            <div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center;">
+                <a href="tel:6303594257" class="btn"><i class="fa-solid fa-phone"></i> VOICE</a>
+                <a href="https://wa.me/916303594257" class="btn"><i class="fa-brands fa-whatsapp"></i> WHATSAPP</a>
+            </div>
+        </section>
 
-function addToCart() {
-    if(currentItem.hasSize && !selectedSize) return alert("Please select a size!");
-    cart.push({...currentItem, selectedSize, finalPrice: currentPrice});
-    updateCartUI(); closeModal();
-}
+        <section id="others">
+            <span class="tag">05. Others</span>
+            <h2 style="font-size: 50px; font-style: italic;">Visual Assets & Scripts</h2>
+            <div class="others-grid">
+                <div class="lab-card"><h3>Script v1</h3><p>Python asset orchestration script.</p></div>
+                <div class="lab-card"><h3>Visual Map</h3><p>Logic flow for episodic content.</p></div>
+            </div>
+        </section>
+    </div>
 
-function updateCartUI() {
-    document.getElementById("cart-count").innerText = cart.length;
-    document.getElementById("cart-floater").style.display = cart.length > 0 ? "block" : "none";
-}
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-function openCart() {
-    let total = 0;
-    const list = document.getElementById("cart-items-list");
-    list.innerHTML = cart.map((item, idx) => {
-        total += item.finalPrice;
-        return `<div class="cart-item">
-            <div class="cart-img">${item.images[0].length <= 4 ? item.images[0] : `<img src="${item.images[0]}">`}</div>
-            <div style="flex:1"><p style="font-size:0.8rem; font-weight:700">${item.name}</p><p style="font-size:0.7rem; color:#666">ID: ${item.id} | ${item.selectedSize} | ₹${item.finalPrice}</p></div>
-            <button onclick="removeFromCart(${idx})" style="border:none; color:red; background:none;">✕</button>
-        </div>`;
-    }).join("");
-    document.getElementById("cart-total").innerText = "Grand Total: ₹" + total;
-    window.scrollTo(0,0);
-    document.getElementById("cart-modal").style.display = "block";
-}
-
-function removeFromCart(idx) {
-    cart.splice(idx, 1); updateCartUI();
-    cart.length > 0 ? openCart() : closeCart();
-}
-
-function openCheckout(source) {
-    if(source === 'direct' && currentItem.hasSize && !selectedSize) return alert("Select Size First!");
-    orderSource = source;
-    closeModal(); closeCart();
-    window.scrollTo(0,0);
-    document.getElementById("checkout-modal").style.display = "block";
-}
-
-function handleOrder(e) {
-    e.preventDefault();
-    const name = document.getElementById("cust-name").value;
-    const phone = document.getElementById("cust-phone").value;
-    const address = document.getElementById("cust-address").value;
-
-    let msg = `*NEW ORDER - SANGEETHA VASTHRALAYAM*\n`;
-    msg += `------------------------------\n`;
-    msg += `*Customer:* ${name}\n`;
-    msg += `*Mobile:* ${phone}\n`;
-    msg += `*Address:* ${address}\n`;
-    msg += `------------------------------\n\n`;
-    msg += `*ORDERED ITEMS:*\n\n`;
-
-    let total = 0;
-    const items = orderSource === 'direct' ? [{...currentItem, selectedSize, finalPrice: currentPrice}] : cart;
-    
-    items.forEach((it, i) => {
-        msg += `*Item ${i+1}:* ${it.name}\n`;
-        msg += `*ID:* ${it.id}\n`;
-        msg += `*Size:* ${it.selectedSize}\n`;
-        msg += `*Price:* ₹${it.finalPrice}\n`;
-        // This adds the image link so WhatsApp shows the preview
-        if(it.images[0].length > 10) { 
-            msg += `*View Product:* ${it.images[0]}\n`; 
+        const isMobile = window.innerWidth < 768;
+        const papers = [];
+        const paperColors = [0xffffff, 0xcbd5e0, 0x8b7355, 0xe9d8a6]; 
+        for(let i=0; i<(isMobile ? 30 : 55); i++) {
+            const geometry = new THREE.PlaneGeometry(3.5, 4.5);
+            const material = new THREE.MeshPhongMaterial({ color: paperColors[Math.floor(Math.random()*4)], side: THREE.DoubleSide, transparent: true, opacity: 0.7 });
+            const p = new THREE.Mesh(geometry, material);
+            p.position.set((Math.random()-0.5)*90, (Math.random()-0.5)*100, (Math.random()-0.5)*40);
+            p.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI);
+            p.userData = { originalPos: p.position.clone(), rotSpeed: (Math.random()-0.5)*0.01, fallSpeed: 0.02+Math.random()*0.04 };
+            scene.add(p);
+            papers.push(p);
         }
-        msg += `\n`;
-        total += it.finalPrice;
-    });
+        scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+        camera.position.z = isMobile ? 65 : 50;
 
-    msg += `------------------------------\n`;
-    msg += `*GRAND TOTAL: ₹${total}*\n`;
-    msg += `------------------------------\n`;
-    msg += `_Please confirm my order!_`;
+        let mouseX = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX - window.innerWidth/2)/100;
+            gsap.to("#cursor", { x: e.clientX, y: e.clientY, duration: 0.1 });
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            papers.forEach(p => { 
+                if(!p.userData.isZoomed) { 
+                    p.position.y -= p.userData.fallSpeed;
+                    p.position.x += (mouseX * 0.02);
+                    if(p.position.y < -55) p.position.y = 55; 
+                } 
+            });
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        function openFullPage(type, index) {
+            const content = {
+                'stories': [
+                    {t: 'Book of Balance', tag: 'STORY ARCHIVE', c: 'The world exists in a state of delicate equilibrium...'},
+                    {t: 'MaHi', tag: 'STORY ARCHIVE', c: 'A survival journey set in a landscape of architectural decay...'},
+                    {t: 'Bite', tag: 'STORY ARCHIVE', c: 'A narrative regarding the decay of systemic communication...'},
+                    {t: 'Loaning', tag: 'STORY ARCHIVE', c: 'Exploring the architecture of digital debt...'},
+                    {t: 'Loading', tag: 'STORY ARCHIVE', c: 'The void between systems.'}
+                ],
+                'games': [
+                    {t: 'Genview', tag: 'GAME BLUEPRINT', c: 'First-generation procedural visualization system...'},
+                    {t: 'Genview V2', tag: 'GAME BLUEPRINT', c: 'Enhanced logic pipelines for modern rendering...'}
+                ],
+                'resume': [
+                    {t: 'Curriculum Vitae', tag: 'Credentials', c: 'System Architect at Fametoonz Hub. Expert in asset orchestration and pipeline logic. Based in Tirupati.'}
+                ]
+            };
+
+            const data = content[type][index];
+            document.getElementById('page-title').innerText = data.t;
+            document.getElementById('page-tag').innerText = data.tag;
+            document.getElementById('page-content').innerHTML = `<p>${data.c}</p>`;
+            
+            const p = papers[Math.floor(Math.random()*papers.length)];
+            p.userData.isZoomed = true;
+
+            // FIXED TIMING: Paper animation runs, THEN page fades in
+            gsap.to(p.position, { x: 0, y: 0, z: isMobile ? 60 : 45, duration: 1.2, ease: "power2.out" });
+            gsap.to(p.rotation, { x: 0, y: 0, z: 0, duration: 1 });
+
+            const page = document.getElementById('reading-page');
+            gsap.set(page, { display: 'flex' });
+            gsap.to(page, { opacity: 1, duration: 0.6, delay: 0.8 }); // Added delay so page waits for paper
+        }
+
+        function closeReadingPage() {
+            gsap.to("#reading-page", { opacity: 0, duration: 0.4, onComplete: () => {
+                document.getElementById('reading-page').style.display = 'none';
+                papers.forEach(p => { 
+                    if(p.userData.isZoomed) { 
+                        gsap.to(p.position, { x: p.userData.originalPos.x, y: p.userData.originalPos.y, z: p.userData.originalPos.z, duration: 1 }); 
+                        p.userData.isZoomed = false; 
+                    } 
+                });
+            }});
+        }
+
+        function toggleMode() { 
+            document.body.classList.toggle('night-mode');
+            document.getElementById('mode-icon').classList.toggle('fa-sun');
+            function updateStatus(newText) {
+    const statusElement = document.getElementById('current-activity');
+    let i = 0;
+    statusElement.innerHTML = ''; // Clear current text
     
-    // Corrected WhatsApp Redirect
-const waNumber = "916303594257"; 
-window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`);
+    function typeWriter() {
+        if (i < newText.length) {
+            statusElement.innerHTML += newText.charAt(i);
+            i++;
+            setTimeout(typeWriter, 50); // Speed of typing
+        }
+    }
+    typeWriter();
 }
 
+// Example: Change status 5 seconds after the page loads
+setTimeout(() => {
+    updateStatus("PARSING SYSTEM ARCHIVES...");
+}, 5000);
+        }
 
-function openCategoryView(catKey) {
-    const cat = allProducts[catKey];
-    document.getElementById("cat-title").innerText = cat.displayName;
-    document.getElementById("category-grid").innerHTML = cat.items.map(i => renderCard(i, cat.hasSize)).join("");
-    document.getElementById("home-container").style.display = "none";
-    document.getElementById("category-container").style.display = "block";
-    window.scrollTo(0,0);
-}
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('section').forEach(s => observer.observe(s));
 
-function closeCategoryView() {
-    document.getElementById("home-container").style.display = "block";
-    document.getElementById("category-container").style.display = "none";
-}
-
-function closeModal() { document.getElementById("product-modal").style.display = "none"; }
-function closeCart() { document.getElementById("cart-modal").style.display = "none"; }
-function closeCheckout() { document.getElementById("checkout-modal").style.display = "none"; }
-</script>
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
 </body>
 </html>
