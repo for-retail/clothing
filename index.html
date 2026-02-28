@@ -94,7 +94,7 @@
  50%{opacity:1}
  100%{opacity:.6}
 }
-}
+
 
 .ring{
  width:70px;
@@ -151,7 +151,7 @@
 <option value="high">Price: High → Low</option>
 </select>
 
-</div>        <button onclick="closeCategoryView()" style="background: #222; color: white; border: none; padding: 8px 12px; border-radius: 5px;">← BACK</button>
+</div>        
         <h2 id="cat-title" style="font-family: Cinzel; color: var(--orange-gold); font-size: 1rem;"></h2>
     </div>
     <div id="category-grid" class="grid-view"></div>
@@ -583,21 +583,7 @@ window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`);
 }
 
 
-let currentCategoryKey = "";
 
-function openCategoryView(catKey) {
-    currentCategoryKey = catKey;
-
-    const cat = allProducts[catKey];
-    document.getElementById("cat-title").innerText = cat.displayName;
-
-    renderCategoryItems(cat.items, cat.hasSize);
-
-    document.getElementById("home-container").style.display = "none";
-    document.getElementById("category-container").style.display = "block";
-    window.scrollTo(0,0);
-
-}
 
 function closeCategoryView() {
     document.getElementById("home-container").style.display = "block";
