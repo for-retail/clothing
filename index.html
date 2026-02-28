@@ -138,8 +138,20 @@
 </div>
 
 <div id="category-container" style="display:none">
-    <div style="background: white; padding: 15px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 20px; position: sticky; top: 60px; z-index: 90;">
-        <button onclick="closeCategoryView()" style="background: #222; color: white; border: none; padding: 8px 12px; border-radius: 5px;">← BACK</button>
+<div style="background: white; padding: 15px; border-bottom: 1px solid #eee; display:flex; align-items:center; justify-content:space-between; gap:10px; position: sticky; top: 60px; z-index: 90;">
+
+<div style="display:flex; align-items:center; gap:20px;">
+<button onclick="closeCategoryView()" style="background:#222;color:white;border:none;padding:8px 12px;border-radius:5px;">← BACK</button>
+<h2 id="cat-title" style="font-family: Cinzel; color: var(--orange-gold); font-size: 1rem;"></h2>
+</div>
+
+<select id="sortSelect" onchange="sortCategory()" style="padding:8px;border-radius:6px;border:1px solid #ddd;font-weight:600;">
+<option value="recent">Recent</option>
+<option value="low">Price: Low → High</option>
+<option value="high">Price: High → Low</option>
+</select>
+
+</div>        <button onclick="closeCategoryView()" style="background: #222; color: white; border: none; padding: 8px 12px; border-radius: 5px;">← BACK</button>
         <h2 id="cat-title" style="font-family: Cinzel; color: var(--orange-gold); font-size: 1rem;"></h2>
     </div>
     <div id="category-grid" class="grid-view"></div>
@@ -204,6 +216,7 @@
 <footer>© 2026 SANGEETHA VASTHRALAYAM</footer>
 
 <script>
+    let currentCategoryKey = "";
 // --- MASTER DATA ---
 // Ikkada nuvvu products add cheyali mawa. Chudu ela undo:
 const allProducts = {
@@ -570,13 +583,20 @@ window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`);
 }
 
 
+let currentCategoryKey = "";
+
 function openCategoryView(catKey) {
+    currentCategoryKey = catKey;
+
     const cat = allProducts[catKey];
     document.getElementById("cat-title").innerText = cat.displayName;
-    document.getElementById("category-grid").innerHTML = cat.items.map(i => renderCard(i, cat.hasSize)).join("");
+
+    renderCategoryItems(cat.items, cat.hasSize);
+
     document.getElementById("home-container").style.display = "none";
     document.getElementById("category-container").style.display = "block";
     window.scrollTo(0,0);
+
 }
 
 function closeCategoryView() {
@@ -587,6 +607,38 @@ function closeCategoryView() {
 function closeModal() { document.getElementById("product-modal").style.display = "none"; }
 function closeCart() { document.getElementById("cart-modal").style.display = "none"; }
 function closeCheckout() { document.getElementById("checkout-modal").style.display = "none"; }
+    function renderCategoryItems(items, hasSize){
+    document.getElementById("category-grid").innerHTML =
+        items.map(i => renderCard(i, hasSize)).join("");
+}
+    function sortCategory(){
+    const val = document.getElementById("sortSelect").value;
+    const cat = allProducts[currentCategoryKey];
+
+    let sorted = [...cat.items];
+
+    if(val==="low"){
+        sorted.sort((a,b)=>{
+            let pa = a.sizePrices ? a.sizePrices[Object.keys(a.sizePrices)[0]] : a.price;
+            let pb = b.sizePrices ? b.sizePrices[Object.keys(b.sizePrices)[0]] : b.price;
+            return pa-pb;
+        });
+    }
+
+    if(val==="high"){
+        sorted.sort((a,b)=>{
+            let pa = a.sizePrices ? a.sizePrices[Object.keys(a.sizePrices)[0]] : a.price;
+            let pb = b.sizePrices ? b.sizePrices[Object.keys(b.sizePrices)[0]] : b.price;
+            return pb-pa;
+        });
+    }
+
+    if(val==="recent"){
+        sorted = [...cat.items].reverse();
+    }
+
+    renderCategoryItems(sorted, cat.hasSize);
+}
 </script>
 </body>
 </html>
