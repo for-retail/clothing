@@ -31,7 +31,17 @@
         .grid-view { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px; }
         @media (min-width: 768px) { .grid-view { grid-template-columns: repeat(5, 1fr); } }
 
-        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; min-width: 160px; }
+        .card{
+ background:white;
+ border-radius:12px;
+ overflow:hidden;
+ box-shadow:0 4px 10px rgba(0,0,0,0.05);
+ cursor:pointer;
+ width:100%;
+}
+        .scroller .card{
+ min-width:160px;
+}
         .img-box { height: 200px; width: 100%; overflow: hidden; background: #f0f0f0; display: flex; align-items: center; justify-content: center; }
         .img-box img { width: 100%; height: 100%; object-fit: cover; }
         .meta { padding: 10px; }
@@ -142,7 +152,7 @@
 
 <div style="display:flex; align-items:center; gap:20px;">
 <button onclick="closeCategoryView()" style="background:#222;color:white;border:none;padding:8px 12px;border-radius:5px;">← BACK</button>
-<h2 id="cat-title" style="font-family: Cinzel; color: var(--orange-gold); font-size: 1rem;"></h2>
+
 </div>
 
 <select id="sortSelect" onchange="sortCategory()" style="padding:8px;border-radius:6px;border:1px solid #ddd;font-weight:600;">
@@ -581,7 +591,18 @@ function handleOrder(e) {
 const waNumber = "916303594257"; 
 window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`);
 }
+function openCategoryView(catKey){
+    currentCategoryKey = catKey;
 
+    const cat = allProducts[catKey];
+    document.getElementById("cat-title").innerText = cat.displayName;
+
+    renderCategoryItems(cat.items, cat.hasSize);
+
+    document.getElementById("home-container").style.display="none";
+    document.getElementById("category-container").style.display="block";
+    window.scrollTo(0,0);
+}
 
 
 
