@@ -119,6 +119,67 @@
 @keyframes spin{
  to{transform:rotate(360deg)}
 }
+
+.top-banner{
+ position:relative;
+ overflow:hidden;
+ padding:15px;
+}
+
+.banner-track{
+ display:flex;
+ transition:transform .6s ease;
+}
+
+.banner-slide{
+ min-width:100%;
+ border-radius:15px;
+ overflow:hidden;
+ cursor:pointer;
+}
+
+.banner-slide img{
+ width:100%;
+ height:200px;
+ object-fit:cover;
+ border-radius:15px;
+}
+
+.nav{
+ position:absolute;
+ top:50%;
+ transform:translateY(-50%);
+ background:#0008;
+ color:white;
+ border:none;
+ padding:10px 14px;
+ font-size:20px;
+ cursor:pointer;
+ border-radius:50%;
+ z-index:5;
+}
+
+.prev{ left:20px }
+.next{ right:20px }
+
+.dots{
+ text-align:center;
+ margin-top:10px;
+}
+
+.dots span{
+ display:inline-block;
+ width:10px;
+ height:10px;
+ background:#ccc;
+ border-radius:50%;
+ margin:5px;
+ cursor:pointer;
+}
+
+.dots .active{
+ background:#FF8C00;
+}
     </style>
 </head>
 <body>
@@ -136,6 +197,20 @@
 
 <div id="home-container">
     <div style="text-align: center; padding-top: 10px;" id="store-status"></div>
+
+    <!-- ⭐ TOP SLIDER -->
+    <div class="top-banner">
+
+  <button class="nav prev" onclick="moveSlide(-1)">❮</button>
+
+  <div class="banner-track" id="banner-track"></div>
+
+  <button class="nav next" onclick="moveSlide(1)">❯</button>
+
+  <div class="dots" id="dots"></div>
+
+</div>
+
     <div id="sections"></div>
     
     <div class="contact-card">
@@ -227,6 +302,49 @@
 
 <script>
     let currentCategoryKey = "";
+
+    const bannersData = [
+{
+ img:"https://imgs.search.brave.com/wh6R_g9ARlAf3bdflx9oTatxLokz3zKYMgRKD-F5_mQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/dmVjdG9yc3RvY2su/Y29tL2kvcHJldmll/dy0xeC85My84NS9u/ZXctYXJyaXZhbC1i/YW5uZXItZGVzaWdu/LXZlY3Rvci0yNzQw/OTM4NS5qcGc",
+ title:"New Arrivals",
+ products:[
+  { id:"B1", name:"Designer Kurta",
+    images:["URL1","URL2","URL3"],
+    sizePrices:{S:900,M:1000,L:1100}
+  }
+ ]
+},
+{
+ img:"https://imgs.search.brave.com/bbkSBp4iaH44G36musIBhbInHFMfLeuUlseFJG4-c9Q/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wMzEv/NjAwLzg2NS9zbWFs/bC9zcGVjaWFsLW9m/ZmVyLWJhbm5lci10/ZW1wbGF0ZS1mcmVl/LXZlY3Rvci5qcGc",
+ title:"Offers",
+ products:[
+  { id:"B2", name:"Trendy Top",
+    images:["URL1","URL2","URL3"],
+    sizePrices:{S:399,M:399,L:449}
+  }
+ ]
+},
+{
+ img:"https://imgs.search.brave.com/f9_8VDpER3DFGzX1hhVuDKPiRIEDNgYs3wvmxAQmoJw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wMDAv/NjkyLzYxOS9zbWFs/bC9hYnN0cmFjdC1t/ZWdhLXNhbGUtdGVt/cGxhdGUtZGVzaWdu/LWZvci1zcGVjaWFs/LW9mZmVycy1zYWxl/cy1hbmQtZGlzY291/bnRzLmpwZw",
+ title:"Trending",
+ products:[
+  { id:"B3", name:"Ankle Dress",
+    images:["URL1","URL2","URL3"],
+    sizePrices:{S:1200,M:1300,L:1400}
+  }
+ ]
+},
+{
+ img:"https://imgs.search.brave.com/1pHtNiEtdg0Uj2UY-7LnPyEZ20Px1ADZKfiVn2iGDHA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wMjcv/NTEzLzMxNy9zbWFs/bC9oYXBweS1kdXJn/YS1wdWphLXNhbGUt/c3BlY2lhbC1vZmZl/ci1iYW5uZXItdGVt/cGxhdGUtd2l0aC1m/ZXN0aXZlLWVsZW1l/bnRzLXZlY3Rvci5q/cGc",
+ title:"Festive",
+ products:[
+  { id:"B4", name:"Silk Saree",
+    images:["URL1","URL2","URL3"],
+    price:3500
+  }
+ ]
+}
+];
 // --- MASTER DATA ---
 // Ikkada nuvvu products add cheyali mawa. Chudu ela undo:
 const allProducts = {
@@ -431,6 +549,7 @@ let orderSource = "";
 window.onload = () => {
  updateStatus();
  renderHome();
+  renderTopBanners();
  setTimeout(()=>{
    document.getElementById("loader").style.opacity="0";
    setTimeout(()=>{
@@ -635,6 +754,71 @@ function closeCheckout() { document.getElementById("checkout-modal").style.displ
     }
 
     renderCategoryItems(sorted, cat.hasSize);
+}
+let slideIndex=0;
+let autoSlide;
+
+function renderTopBanners(){
+ const track=document.getElementById("banner-track");
+ const dots=document.getElementById("dots");
+
+ track.innerHTML=bannersData.map((b,i)=>`
+   <div class="banner-slide" onclick="openBannerProducts(${i})">
+     <img src="${b.img}">
+   </div>
+ `).join("");
+
+ dots.innerHTML=bannersData.map((_,i)=>
+   `<span onclick="goSlide(${i})"></span>`
+ ).join("");
+
+ updateSlider();
+ startAuto();
+}
+function openBannerProducts(i){
+
+ const data=bannersData[i];
+
+ document.getElementById("cat-title").innerText=data.title;
+
+ renderCategoryItems(
+  data.products,
+  !!data.products[0].sizePrices
+ );
+
+ document.getElementById("home-container").style.display="none";
+ document.getElementById("category-container").style.display="block";
+ window.scrollTo(0,0);
+}
+function updateSlider(){
+ const track=document.getElementById("banner-track");
+ track.style.transform=`translateX(-${slideIndex*100}%)`;
+
+ document.querySelectorAll(".dots span")
+ .forEach((d,i)=> d.classList.toggle("active",i===slideIndex));
+}
+
+function moveSlide(dir){
+ slideIndex+=dir;
+ if(slideIndex<0) slideIndex=bannersData.length-1;
+ if(slideIndex>=bannersData.length) slideIndex=0;
+ updateSlider();
+ restartAuto();
+}
+
+function goSlide(i){
+ slideIndex=i;
+ updateSlider();
+ restartAuto();
+}
+
+function startAuto(){
+ autoSlide=setInterval(()=>{ moveSlide(1); },4000);
+}
+
+function restartAuto(){
+ clearInterval(autoSlide);
+ startAuto();
 }
 </script>
 </body>
